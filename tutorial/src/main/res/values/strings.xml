@@ -1,0 +1,10 @@
+<resources>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="next">Next</string>
+    <string name="previous">Previous</string>
+    <string name="skip_tutorial">Skip tutorial</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="tutorial_instructions">Instructions on how to use the app</string>
+    <string name="dont_show_message">Don\'t show me this again</string>
+</resources>

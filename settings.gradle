@@ -1,0 +1,3 @@
+include ':tutorial'
+include ':app'
+rootProject.name = "Cryptographer"
