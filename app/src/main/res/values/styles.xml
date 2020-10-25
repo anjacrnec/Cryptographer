@@ -14,4 +14,68 @@
         <item name="colorAccent">@color/colorAccent</item>
     </style>
 
+    <style name="CryptographerOutputEditText">
+        <item name="android:clickable">false</item>
+        <item name="android:cursorVisible">false</item>
+        <item name="android:focusable">false</item>
+        <item name="android:focusableInTouchMode">false</item>
+    </style>
+
+    <style name="CryptographerEditText" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="boxStrokeColor">@color/color_accent</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="TextInputLayoutHelper">
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="CryptographerButtons">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_weight">1</item>
+        <item name="android:backgroundTint">#D5D5D5</item>
+    </style>
+
+    <style name="CryptographerOutput" parent="Widget.MaterialComponents.TextInputLayout.OutlinedBox.Dense">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginStart">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+        <item name="android:layout_marginEnd">10dp</item>
+        <item name="android:layout_marginBottom">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:background">@color/color_accent</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
+    <style name="CryptographerTitles" parent="TextAppearance.AppCompat.Medium">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:background">#4C4C4C</item>
+        <item name="android:elevation">6dp</item>
+        <item name="android:foreground">?selectableItemBackground</item>
+        <item name="android:gravity">center</item>
+        <item name="android:padding">10dp</item>
+        <item name="android:textColor">@color/color_accent</item>
+        <item name="android:textStyle">bold</item>
+        <item name="textAllCaps">true</item>
+    </style>
+
+    <style name="CryptographerCiphers">
+        <item name="android:layout_width">match_parent</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginLeft">10dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:layout_marginTop">10dp</item>
+    </style>
+
+
+
 </resources>

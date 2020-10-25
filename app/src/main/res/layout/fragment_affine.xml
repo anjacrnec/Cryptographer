@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <TextView
+        android:id="@+id/affineExpandBtn"
+        style="@style/CryptographerTitles"
+        android:text="@string/affine_cipher" />
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/affineExpandLayout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:el_duration="500"
+        app:el_expanded="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            >
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/affineInputLayout"
+                style="@style/CryptographerEditText"
+                android:hint="@string/input"
+                app:hintTextAppearance="@style/TextInputLayoutHelper">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/affineInput"
+                    style="@style/TextInputLayoutHelper"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:imeOptions="flagNoExtractUi"
+                    android:textSize="15sp"
+                    android:digits="abcdefghijklmnopqrstuvwxyz ABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:singleLine="true" />
+
+            </com.google.android.material.textfield.TextInputLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutAffineKeys"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/affineInputLayout"
+                android:orientation="horizontal">
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/affineKeyALayout"
+                    style="@style/CryptographerEditText"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    app:helperText="@string/affine_helper_key"
+                    app:helperTextEnabled="true"
+                    app:hintTextAppearance="@style/TextInputLayoutHelper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/affineKeyA"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/keyA"
+                        android:inputType="number"
+                        android:imeOptions="flagNoExtractUi"
+                        android:textSize="15sp"
+                        app:hintTextAppearance="@style/TextInputLayoutHelper" />
+                </com.google.android.material.textfield.TextInputLayout>
+
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/affineKeyBLayout"
+                    style="@style/CryptographerEditText"
+                    android:layout_marginBottom="10dp"
+                    android:layout_weight="1"
+                    app:hintTextAppearance="@style/TextInputLayoutHelper">
+
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/affineKeyB"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:hint="@string/keyB"
+                        android:imeOptions="flagNoExtractUi"
+                        android:textSize="15sp"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/layoutButtonsAffine"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/layoutAffineKeys"
+                android:orientation="horizontal">
+
+                <Button
+                    android:id="@+id/affineEncryptBtn"
+                    style="@style/CryptographerButtons"
+                    android:layout_marginStart="10dp"
+                    android:text="@string/encrypt" />
+
+                <Button
+                    android:id="@+id/affineDecryptBtn"
+                    style="@style/CryptographerButtons"
+                    android:text="@string/decrypt" />
+
+                <Button
+                    android:id="@+id/affineClearBtn"
+                    style="@style/CryptographerButtons"
+                    android:layout_marginEnd="10dp"
+                    android:text="@string/clear" />
+            </LinearLayout>
+
+            <com.google.android.material.textfield.TextInputLayout
+                android:id="@+id/affineOutputLayout"
+                style="@style/CryptographerOutput"
+                android:layout_below="@id/layoutButtonsAffine"
+                android:hint="@string/cipher_text"
+                android:textColorHint="#FFFFFF"
+                app:hintEnabled="false">
+
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/affineOutput"
+                    style="@style/CryptographerOutputEditText"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textSize="15sp"
+                    android:inputType="textNoSuggestions" />
+            </com.google.android.material.textfield.TextInputLayout>
+
+        </RelativeLayout>
+    </net.cachapa.expandablelayout.ExpandableLayout>
+</LinearLayout>

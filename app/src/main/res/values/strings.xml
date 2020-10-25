@@ -1,4 +1,43 @@
 <resources>
     <string name="app_name">Cryptographer</string>
     <string name="title_tutorial">Tutorial</string>
+    <string name="cryptography">Cryptography</string>
+    <string name="exercises">Exercises</string>
+    <string name="help">Help</string>
+
+    <string name="encrypt">Encrypt</string>
+    <string name="decrypt">Decrypt</string>
+    <string name="clear">Clear</string>
+    <string name="plain_text"> Plain text </string>
+    <string name="cipher_text"> Cipher Text </string>
+    <string name="key"> Key </string>
+    <string name="input">Input</string>
+    <string name="output">Output</string>
+
+
+    <string name="caeser_encryption">caeser cipher </string>
+    <string name="caeser_helper_key">The key must be between values 1 and 25</string>
+
+
+    <string name="affine_cipher">affine cipher</string>
+    <string name="keyA"> Key A</string>
+    <string name="keyB"> Key B</string>
+    <string name="affine_helper_key">The key must be invertible in relation to 26</string>
+
+    <string name="vignere_cipher">vigenere cipher</string>
+    <string name="playfair_cipher">playfair cipher</string>
+
+
+    <string name="transpositional_cipher">transpositional</string>
+    <string name="transpositional_orthogonal">Orthogonal</string>
+    <string name="transpositional_orthogonal_boustrophedon">Orthogonal Boustrophedon </string>
+    <string name="transpositional_orthogonal_boustrophedon2">Orthogonal \n Boustrophedon </string>
+    <string name="transpositional_diagonal">Diagonal</string>
+    <string name="transpositional_helper_key">Key must consist of atleast 2 numbers.\n If sorted the key should consist of a series of incrementing values.</string>
+    <string name="transpositional_helper_key2">Key must consist of atleast 2 numbers.\n If sorted the key should consist of a series of incrementing values.</string>
+    <string name="transpositional_diagonal_key">Key must be shorter than the input. </string>
+    <string name="trans_ortho_boustrophedon_cipher">transpositional orthogonal boustrophedon cipher</string>
+    <string name="trans_ortho_cipher">transpositional orthogonal cipher</string>
+    <string name="trans_diagonal_cipher">transpositional diagonal cipher</string>
+
 </resources>

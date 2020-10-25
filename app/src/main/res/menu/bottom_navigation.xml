@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+
+
+    <item
+        android:id="@+id/navCryptography"
+        android:icon="@drawable/ic_placeholder"
+        android:title="@string/cryptography" />
+
+    <item
+        android:id="@+id/navExercises"
+        android:icon="@drawable/ic_placeholder"
+        android:title="@string/exercises" />
+
+
+</menu>
