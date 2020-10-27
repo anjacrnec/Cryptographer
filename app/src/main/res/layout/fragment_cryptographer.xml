@@ -21,15 +21,15 @@
 
             <FrameLayout
                 android:id="@+id/caeserFragmentContainer"
-                style="@style/CryptographerCiphers"></FrameLayout>
+                style="@style/CryptographerCiphers"/>
 
             <FrameLayout
                 android:id="@+id/affineFragmentContainer"
-                style="@style/CryptographerCiphers"></FrameLayout>
+                style="@style/CryptographerCiphers"/>
 
             <FrameLayout
                 android:id="@+id/vigenereFragmentContainer"
-                style="@style/CryptographerCiphers"></FrameLayout>
+                style="@style/CryptographerCiphers"/>
 
             <FrameLayout
                 android:id="@+id/playfairFragmentContainer"

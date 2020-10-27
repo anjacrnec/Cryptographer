@@ -3,13 +3,15 @@ package com.appbundles.cryptographer
 import CryptographerFragment
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
+import androidx.fragment.app.Fragment
 import com.appbundles.cryptographer.features.Features
 import com.example.bundles.BaseSplitActivity
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import kotlinx.android.synthetic.main.activity_main.*
+
 
 class MainActivity : BaseSplitActivity() {
 
@@ -28,23 +30,68 @@ class MainActivity : BaseSplitActivity() {
         if (savedInstanceState == null) {
             cryptographerFragment = CryptographerFragment()
             supportFragmentManager.beginTransaction().add(
+                R.id.main_fragment_container,
+                cryptographerFragment,
+                TAG_CRYPTOGRAPHER_FRAGMENT
+            ).commit()
+
+            if(isExercisesInstalled()){
+                val exercisesFragment=Class.forName(Features.Exercises.FRAGMENT_EXERCISES_DIRECTORY).newInstance() as Fragment
+//                var exercisesFragment=Fragment.instantiate(applicationContext,Features.Exercises.FRAGMENT_EXERCISES_DIRECTORY)
+                supportFragmentManager.beginTransaction().add(
                     R.id.main_fragment_container,
-                    cryptographerFragment,
-                    TAG_CRYPTOGRAPHER_FRAGMENT
-                )
-                .commit()
+                    exercisesFragment,
+                    TAG_EXERCISES_FRAGMENT
+                ).hide(exercisesFragment).commit()
+            }
+
         } else {
-            cryptographerFragment = supportFragmentManager.findFragmentByTag(TAG_CRYPTOGRAPHER_FRAGMENT) as CryptographerFragment
+            cryptographerFragment = supportFragmentManager.findFragmentByTag(
+                TAG_CRYPTOGRAPHER_FRAGMENT
+            ) as CryptographerFragment
 
         }
 
-        Log.e("BUNDLES", "skip login" + Storage.getSkipTutorial(applicationContext).toString())
-        Log.e("BUNDLES", "uninstall" + Storage.getUninstallTutorial(applicationContext).toString())
+        initBottomNavigation()
+        mainBottomNavigation.setOnNavigationItemSelectedListener {
+            val item: Int = it.getItemId()
+            val cryptographerFragment= supportFragmentManager.findFragmentByTag(TAG_CRYPTOGRAPHER_FRAGMENT)
+            val exercisesFragment=supportFragmentManager.findFragmentByTag(TAG_EXERCISES_FRAGMENT)
+            if (item == R.id.navCryptography) {
+
+                exercisesFragment?.let { fragment ->
+                    supportFragmentManager.beginTransaction().hide(fragment).commit()
+                }
+
+                cryptographerFragment?.let { fragment ->
+                    supportFragmentManager.beginTransaction().show(fragment).commit()
+                }
+
+            } else if (item == R.id.navExercises) {
+                exercisesFragment?.let { fragment ->
+                    supportFragmentManager.beginTransaction().show(fragment).commit()
+
+                    cryptographerFragment?.let { fragment ->
+                        supportFragmentManager.beginTransaction().hide(fragment).commit()
+                    }
+                }
+
+            }
+            true
+        }
 
     }
 
+    private fun isExercisesInstalled():Boolean{
+        return splitInstallManager.installedModules.contains(Features.Exercises.FEATURE_NAME)
+    }
+
+    private fun isTutorialInstalled():Boolean{
+       return splitInstallManager.installedModules.contains(Features.Tutorial.FEATURE_NAME)
+    }
+
     private fun checkTutorialStatus(){
-        if(splitInstallManager.installedModules.contains(Features.Tutorial.FEATURE_NAME)
+        if(isTutorialInstalled()
             && Storage.getUninstallTutorial(applicationContext))
             splitInstallManager.deferredUninstall(arrayListOf(Features.Tutorial.FEATURE_NAME))
     }
@@ -55,19 +102,24 @@ class MainActivity : BaseSplitActivity() {
         return super.onCreateOptionsMenu(menu)
     }
 
+
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
 
         when (id) {
             R.id.settings_help -> {
-                if (splitInstallManager.installedModules.contains(Features.Tutorial.FEATURE_NAME)
+                if (isTutorialInstalled()
                     && !Storage.getUninstallTutorial(applicationContext)
                 )
                     navigateToTutorial()
-
             }
         }
         return super.onOptionsItemSelected(item)
+    }
+
+    private fun initBottomNavigation(){
+        if(!splitInstallManager.installedModules.contains(Features.Exercises.FEATURE_NAME))
+            mainBottomNavigation.menu.findItem(R.id.navExercises).title=getString(R.string.exercises_download)
     }
 
     private fun navigateToTutorial(){

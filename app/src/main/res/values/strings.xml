@@ -39,5 +39,10 @@
     <string name="trans_ortho_boustrophedon_cipher">transpositional orthogonal boustrophedon cipher</string>
     <string name="trans_ortho_cipher">transpositional orthogonal cipher</string>
     <string name="trans_diagonal_cipher">transpositional diagonal cipher</string>
+    <string name="trans_method">Method:</string>
 
+    <string name="title_exercises">Exercises</string>
+    <string name="exercises_download">Download Exercises</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

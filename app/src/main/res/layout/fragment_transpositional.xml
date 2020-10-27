@@ -79,7 +79,7 @@
                 android:layout_marginStart="10dp"
                 android:layout_marginTop="10dp"
                 android:textSize="15sp"
-                android:text="Method:" />
+                android:text="@string/trans_method" />
 
             <RadioGroup
                 android:id="@+id/transRadioGroup"
