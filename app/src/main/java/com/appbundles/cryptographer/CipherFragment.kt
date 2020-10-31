@@ -3,9 +3,10 @@ package com.appbundles.cryptographer
 import android.os.Bundle
 import android.widget.Button
 import androidx.fragment.app.Fragment
+import com.example.bundles.BaseSplitFragment
 import com.google.android.material.textfield.TextInputEditText
 
-abstract class CipherFragment:Fragment() {
+abstract class CipherFragment:BaseSplitFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

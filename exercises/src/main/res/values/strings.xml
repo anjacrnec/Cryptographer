@@ -1,4 +1,33 @@
 <resources>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="exercise_body">Use the %1$s to %2$s the %3$s %4$s with the key %5$s</string>
+    <string name="ek">encrypt</string>
+    <string name="dk">decrypt</string>
+    <string name="pt">plaintext</string>
+    <string name="ct">ciphertext</string>
+    <string name="exercise">Exercise</string>
+    <string name="cipher_colon">Cipher : </string>
+    <string name="plain_text_colon"> Plain text : </string>
+    <string name="cipher_text_colon"> Cipher text :</string>
+    <string name="key_colon"> Key :</string>
+    <string name="new_exercise">Next </string>
+    <string name="configure_exercise">Configure exercise generation settings</string>
+    <string name="answer">Answer</string>
+    <string name="generate_answer">See answer</string>
+
+    <string name="caeser">Caeser</string>
+    <string name="affine">Affine</string>
+    <string name="vigenere">Vigenere</string>
+    <string name="playfair">Playfair</string>
+    <string name="ortho">Orthogonal</string>
+    <string name="reverse">Reverse orthogonal</string>
+    <string name="diagonal">Diagonal</string>
+    <string name="include_sentences">Sentences</string>
+
+    <style name="Hint2">
+        <item name="android:textColor">@color/color_primary_dark</item>
+        <item name="android:textSize">15sp</item>
+    </style>
+
 </resources>

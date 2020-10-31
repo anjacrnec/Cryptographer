@@ -1,6 +1,17 @@
 package com.appbundles.cryptographer.features
 
+import android.content.Context
+import com.appbundles.cryptographer.R
+import com.appbundles.cryptographer.R.layout
+
 class Features {
+
+    class Base{
+        companion object{
+            const val FEATURE_DIRECTORY="com.appbundles.cryptographer."
+
+        }
+    }
 
     class Tutorial{
         companion object{
