@@ -1,18 +1,22 @@
 package com.appbundles.cryptographer
 
 import CryptographerFragment
-import android.app.Dialog
-import android.content.DialogInterface
 import android.content.Intent
 import android.os.Bundle
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
+import android.widget.Toast
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProvider
 import com.appbundles.cryptographer.features.Features
 import com.example.bundles.BaseSplitActivity
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
+import com.google.android.play.core.splitinstall.SplitInstallSessionState
+import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
+import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import kotlinx.android.synthetic.main.activity_main.*
 
 
@@ -21,7 +25,9 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
     private lateinit var cryptographerFragment:CryptographerFragment
     private lateinit var splitInstallManager:SplitInstallManager
+    private lateinit var listener: SplitInstallStateUpdatedListener
     private lateinit var dialog: CustomDialog
+    private lateinit var viewModel: MainViewModel
     val TAG_CRYPTOGRAPHER_FRAGMENT = "cryptographer"
     val TAG_EXERCISES_FRAGMENT = "exercises"
 
@@ -31,9 +37,22 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
         splitInstallManager=SplitInstallManagerFactory.create(applicationContext)
 
-        checkTutorialStatus()
+        initFeatures()
         initFragments(savedInstanceState)
         initBottomNavigation()
+        initViewModel()
+        listener=viewModel.initSplitListener(splitInstallManager)
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+        splitInstallManager.registerListener(listener)
+    }
+
+    override fun onPause() {
+        super.onPause()
+        splitInstallManager.unregisterListener(listener)
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
@@ -44,7 +63,6 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
         val id = item.itemId
-
         when (id) {
             R.id.settings_help -> {
                 if (isTutorialInstalled()
@@ -56,6 +74,29 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
         return super.onOptionsItemSelected(item)
     }
 
+    private fun initViewModel(){
+        viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
+
+        viewModel.statusValue.observe(this, Observer {status->
+            when(status){
+
+                SplitInstallSessionStatus.PENDING->{
+                   //showExercisesDownloadingDialog()
+                    Toast.makeText(this,"PENDING",Toast.LENGTH_SHORT).show()
+                }
+
+                SplitInstallSessionStatus.DOWNLOADING->{
+                    Toast.makeText(this,"downloading",Toast.LENGTH_SHORT).show()
+                }
+
+                SplitInstallSessionStatus.INSTALLED->{
+                   //dialog?.dismiss()
+                    Toast.makeText(this,"INSTALLED YAY",Toast.LENGTH_SHORT).show()
+                }
+            }
+        })
+
+    }
 
     private fun initFragments(savedInstanceState: Bundle?){
         if (savedInstanceState == null) {
@@ -66,7 +107,6 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
             if(isExercisesInstalled()){
                 val exercisesFragment=Class.forName(Features.Exercises.FRAGMENT_EXERCISES_DIRECTORY).newInstance() as Fragment
-//                var exercisesFragment=Fragment.instantiate(applicationContext,Features.Exercises.FRAGMENT_EXERCISES_DIRECTORY)
                 supportFragmentManager.beginTransaction().add(
                     R.id.main_fragment_container, exercisesFragment, TAG_EXERCISES_FRAGMENT
                 ).hide(exercisesFragment).commit()
@@ -112,12 +152,23 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
         return splitInstallManager.installedModules.contains(Features.Tutorial.FEATURE_NAME)
     }
 
-    private fun checkTutorialStatus(){
+    private fun initFeatures(){
         if(isTutorialInstalled()
             && Storage.getUninstallTutorial(applicationContext))
             splitInstallManager.deferredUninstall(arrayListOf(Features.Tutorial.FEATURE_NAME))
     }
 
+    private fun showExercisesDownloadingDialog(){
+        dialog=CustomDialog.newInstance(
+            "Downloading",
+            "status",
+            "hide",
+            "cancel"
+        )
+        dialog.isCancelable=false
+        dialog.show(supportFragmentManager,CustomDialog.DIALOG_DOWNLOADING.toString())
+
+    }
 
     private fun showExercisesDownloadDialog() {
      dialog=CustomDialog.newInstance(
@@ -129,7 +180,7 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
               "never",
                 R.drawable.ic_download)
         dialog.isCancelable=false
-        dialog.show(supportFragmentManager,"dialog")
+        dialog.show(supportFragmentManager,CustomDialog.DIALOG_DOWNLOAD_EXERCISE.toString())
 
     }
 
@@ -181,7 +232,8 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     }
 
     override fun onDownloadExerciseYes(includeSave: Boolean) {
-
+        dialog?.dismiss()
+        viewModel.installExercises(splitInstallManager)
     }
 
     override fun onDownloadExerciseNever() {
@@ -191,6 +243,13 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
         dialog?.dismiss()
     }
 
+    override fun onDownloadingCancel() {
 
+    }
+
+    override fun onDownloadingHide() {
+        mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
+        dialog?.dismiss()
+    }
 
 }

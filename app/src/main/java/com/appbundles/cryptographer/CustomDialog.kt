@@ -1,15 +1,11 @@
 package com.appbundles.cryptographer
 
 import android.content.Context
-import android.content.DialogInterface
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Button
-import android.widget.CheckBox
-import android.widget.ImageView
-import android.widget.TextView
+import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
 
@@ -32,12 +28,14 @@ class CustomDialog():DialogFragment(){
     private lateinit var dialogOptionThree:Button
     private lateinit var dialogCheckbox: CheckBox
     private lateinit var dialogIcon: ImageView
-
+    private lateinit var dialogProgress: ProgressBar
     private var dialogType:Int=R.drawable.ic_placeholder
 
-    var onClickListener: OnClickListener? = null
+    private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
+        fun onDownloadingHide(){}
+        fun onDownloadingCancel(){}
         fun onDownloadSave(){}
         fun onDownloadExerciseYes(includeSave:Boolean){}
         fun onDownloadExerciseNever(){}
@@ -50,23 +48,31 @@ class CustomDialog():DialogFragment(){
         const val DIALOG_DOWNLOAD_EXERCISE= 1
         const val DIALOG_DOWNLOAD_SAVE = 2
         const val DIALOG_DOWNLOAD_TUTORIAL=3
+        const val DIALOG_DOWNLOADING= 4
 
-        private val DIALOG_TITLE: String = "title"
-        private val DIALOG_BODY = "body"
-        private val DIALOG_OPTION_ONE = "one"
-        private val DIALOG_OPTION_TWO = "two"
-        private val DIALOG_OPTION_THREE = "three"
-        private val DIALOG_CB="cb"
-        private val DIALOG_ICON="icon"
-        private val DIALOG_TYPE="type"
+        private const val DIALOG_TITLE: String = "title"
+        private const val DIALOG_BODY = "body"
+        private const val DIALOG_OPTION_ONE = "one"
+        private const val DIALOG_OPTION_TWO = "two"
+        private const val DIALOG_OPTION_THREE = "three"
+        private const val DIALOG_CB="cb"
+        private const val DIALOG_ICON="icon"
+        private const val DIALOG_TYPE="type"
 
-        fun newInstance(
-            title: String,
-            body: String,
-            optionOne: String,
-            optionTwo: String,
-            icon:Int
-        ):CustomDialog{
+
+        fun newInstance(title: String, body: String, optionOne: String, optionTwo: String):CustomDialog{
+            val args = Bundle()
+            args.putString(DIALOG_TITLE, title)
+            args.putString(DIALOG_BODY, body)
+            args.putString(DIALOG_OPTION_ONE, optionOne)
+            args.putString(DIALOG_OPTION_TWO, optionTwo)
+            val fragment = CustomDialog()
+            fragment.arguments = args
+            args.putInt(DIALOG_TYPE, DIALOG_DOWNLOADING)
+            return fragment
+        }
+
+        fun newInstance(title: String, body: String, optionOne: String, optionTwo: String, icon:Int):CustomDialog{
             val args = Bundle()
             args.putString(DIALOG_TITLE, title)
             args.putString(DIALOG_BODY, body)
@@ -78,15 +84,7 @@ class CustomDialog():DialogFragment(){
             return fragment
         }
 
-        fun newInstance(
-            title: String,
-            body: String,
-            check:String?,
-            optionOne: String,
-            optionTwo: String,
-            optionThree: String,
-            icon:Int
-        ): CustomDialog {
+        fun newInstance(title: String, body: String, check:String?, optionOne: String, optionTwo: String, optionThree: String, icon:Int): CustomDialog {
             val args = Bundle()
             args.putString(DIALOG_TITLE, title)
             args.putString(DIALOG_BODY, body)
@@ -120,7 +118,7 @@ class CustomDialog():DialogFragment(){
         container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.dialog_feature_download, null)
+        val view = inflater.inflate(R.layout.dialog_custom, null)
 
         dialogTitle=view.findViewById(R.id.dialog_title)
         dialogBody=view.findViewById(R.id.dialog_body)
@@ -129,6 +127,7 @@ class CustomDialog():DialogFragment(){
         dialogOptionThree=view.findViewById(R.id.dialog_option_three)
         dialogCheckbox=view.findViewById(R.id.dialog_checkbox)
         dialogIcon=view.findViewById(R.id.dialog_icon)
+        dialogProgress=view.findViewById(R.id.dialog_progress)
 
         dialogTitle.text=title
         dialogBody.text=body
@@ -145,16 +144,19 @@ class CustomDialog():DialogFragment(){
         dialogOptionThree.text=optionThree
 
         when(dialogType){
+
             DIALOG_DOWNLOAD_EXERCISE->{
-                dialogOptionOne.setOnClickListener {
-                    onClickListener?.onDownloadExerciseYes(dialogCheckbox.isChecked)
-                }
-                dialogOptionTwo.setOnClickListener {
-                    onClickListener?.onCancelDialog()
-                }
-                dialogOptionThree.setOnClickListener {
-                    onClickListener?.onDownloadExerciseNever()
-                }
+                dialogProgress.visibility=View.INVISIBLE
+                dialogOptionOne.setOnClickListener { onClickListener?.onDownloadExerciseYes(dialogCheckbox.isChecked) }
+                dialogOptionTwo.setOnClickListener { onClickListener?.onCancelDialog() }
+                dialogOptionThree.setOnClickListener { onClickListener?.onDownloadExerciseNever() }
+            }
+
+            DIALOG_DOWNLOADING->{
+                dialogIcon.visibility=View.INVISIBLE
+                dialogOptionOne.setOnClickListener { onClickListener?.onDownloadingHide() }
+                dialogOptionTwo.setOnClickListener {  onClickListener?.onDownloadingCancel()}
+                dialogOptionThree.visibility=View.GONE
             }
         }
 
@@ -164,7 +166,7 @@ class CustomDialog():DialogFragment(){
 
 
     override fun onResume() {
-        dialog?.getWindow()?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
+        dialog?.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)
         super.onResume()
     }
 
