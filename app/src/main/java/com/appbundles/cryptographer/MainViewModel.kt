@@ -15,6 +15,9 @@ import com.google.android.play.core.tasks.OnSuccessListener
 
 class MainViewModel:ViewModel() {
 
+    private val sessionId = MutableLiveData<Int>()
+    val sessionIdValue: LiveData<Int> = sessionId
+
     private val status = MutableLiveData<Int>()
     val statusValue: LiveData<Int> = status
 
@@ -41,7 +44,7 @@ class MainViewModel:ViewModel() {
                     status.postValue(SplitInstallSessionStatus.INSTALLING)
                 }
 
-                SplitInstallSessionStatus.FAILED -> {
+                SplitInstallSessionStatus.FAILED, SplitInstallSessionStatus.UNKNOWN -> {
                     status.postValue(SplitInstallSessionStatus.FAILED)
                 }
             }
@@ -54,7 +57,7 @@ class MainViewModel:ViewModel() {
         splitInstallManager
             .startInstall(requestFeature)
             .addOnSuccessListener(OnSuccessListener<Int> {
-
+                sessionId.postValue(it)
             }
             )
             .addOnFailureListener(OnFailureListener {

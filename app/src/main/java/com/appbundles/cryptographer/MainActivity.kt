@@ -23,13 +23,16 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
 
+    private var sessionId:Int?=null
     private lateinit var cryptographerFragment:CryptographerFragment
     private lateinit var splitInstallManager:SplitInstallManager
     private lateinit var listener: SplitInstallStateUpdatedListener
     private lateinit var dialog: CustomDialog
+    private lateinit var dialogDownloading:CustomDialog
     private lateinit var viewModel: MainViewModel
     val TAG_CRYPTOGRAPHER_FRAGMENT = "cryptographer"
     val TAG_EXERCISES_FRAGMENT = "exercises"
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -77,21 +80,36 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     private fun initViewModel(){
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.statusValue.observe(this, Observer {status->
-            when(status){
+        viewModel.sessionIdValue.observe(this, Observer { sessionId ->
+            this.sessionId=sessionId
+        })
 
+        viewModel.statusValue.observe(this, Observer {status->
+           val dialogDownloading:CustomDialog?= supportFragmentManager.findFragmentByTag(CustomDialog.DIALOG_DOWNLOADING.toString()) as CustomDialog?
+            when(status){
                 SplitInstallSessionStatus.PENDING->{
-                   //showExercisesDownloadingDialog()
-                    Toast.makeText(this,"PENDING",Toast.LENGTH_SHORT).show()
+                    dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_pending))
                 }
 
                 SplitInstallSessionStatus.DOWNLOADING->{
-                    Toast.makeText(this,"downloading",Toast.LENGTH_SHORT).show()
+                    dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_downloading))
+                }
+
+                SplitInstallSessionStatus.INSTALLING->{
+                    dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_installing))
                 }
 
                 SplitInstallSessionStatus.INSTALLED->{
-                   //dialog?.dismiss()
-                    Toast.makeText(this,"INSTALLED YAY",Toast.LENGTH_SHORT).show()
+                    dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_installed))
+                    dialogDownloading?.setIcon(R.drawable.ic_placeholder)
+                }
+
+                SplitInstallSessionStatus.CANCELED->{
+                   // dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_canceled))
+                }
+
+                SplitInstallSessionStatus.FAILED->{
+                    dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_error))
                 }
             }
         })
@@ -159,15 +177,14 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     }
 
     private fun showExercisesDownloadingDialog(){
-        dialog=CustomDialog.newInstance(
-            "Downloading",
+        dialogDownloading=CustomDialog.newInstance(
+            "Pending",
             "status",
             "hide",
             "cancel"
         )
-        dialog.isCancelable=false
-        dialog.show(supportFragmentManager,CustomDialog.DIALOG_DOWNLOADING.toString())
-
+        dialogDownloading.isCancelable=false
+        dialogDownloading.show(supportFragmentManager,CustomDialog.DIALOG_DOWNLOADING.toString())
     }
 
     private fun showExercisesDownloadDialog() {
@@ -181,7 +198,6 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
                 R.drawable.ic_download)
         dialog.isCancelable=false
         dialog.show(supportFragmentManager,CustomDialog.DIALOG_DOWNLOAD_EXERCISE.toString())
-
     }
 
 
@@ -234,6 +250,7 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     override fun onDownloadExerciseYes(includeSave: Boolean) {
         dialog?.dismiss()
         viewModel.installExercises(splitInstallManager)
+        showExercisesDownloadingDialog()
     }
 
     override fun onDownloadExerciseNever() {
@@ -244,12 +261,14 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     }
 
     override fun onDownloadingCancel() {
-
+        mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
+        sessionId?.let { splitInstallManager.cancelInstall(it) }
+        dialogDownloading.dismiss()
     }
 
     override fun onDownloadingHide() {
         mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        dialog?.dismiss()
+        dialogDownloading.dismiss()
     }
 
 }

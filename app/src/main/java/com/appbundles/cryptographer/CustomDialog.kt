@@ -2,11 +2,14 @@ package com.appbundles.cryptographer
 
 import android.content.Context
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
+import androidx.core.os.HandlerCompat.postDelayed
 import androidx.fragment.app.DialogFragment
 
 
@@ -146,14 +149,15 @@ class CustomDialog():DialogFragment(){
         when(dialogType){
 
             DIALOG_DOWNLOAD_EXERCISE->{
-                dialogProgress.visibility=View.INVISIBLE
+                dialogProgress.visibility=View.GONE
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadExerciseYes(dialogCheckbox.isChecked) }
                 dialogOptionTwo.setOnClickListener { onClickListener?.onCancelDialog() }
                 dialogOptionThree.setOnClickListener { onClickListener?.onDownloadExerciseNever() }
             }
 
             DIALOG_DOWNLOADING->{
-                dialogIcon.visibility=View.INVISIBLE
+                dialogIcon.visibility=View.GONE
+                dialogBody.visibility=View.GONE
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadingHide() }
                 dialogOptionTwo.setOnClickListener {  onClickListener?.onDownloadingCancel()}
                 dialogOptionThree.visibility=View.GONE
@@ -162,6 +166,47 @@ class CustomDialog():DialogFragment(){
 
 
         return view
+    }
+
+    fun setOptionOne(text: String?){
+        Handler(Looper.getMainLooper()).postDelayed({
+            run {
+                if(text.isNullOrEmpty())
+                    dialogOptionOne.visibility==View.GONE
+                else
+                    dialogOptionOne.text=text
+            }
+        }, 100)
+    }
+
+    fun setOptionTwo(text:String?){
+            Handler(Looper.getMainLooper()).postDelayed({
+                run {
+                    if(text.isNullOrEmpty())
+                        dialogOptionTwo.visibility==View.GONE
+                }
+            }, 100)
+    }
+
+    fun setIcon(icon:Int){
+        Handler(Looper.getMainLooper()).postDelayed({
+            run {
+                if(dialogIcon.visibility==View.GONE)
+                    dialogIcon.visibility=View.VISIBLE
+                if(dialogProgress.visibility==View.VISIBLE)
+                    dialogProgress.visibility=View.GONE
+                dialogIcon.setImageResource(icon)
+            }
+        }, 100)
+
+    }
+
+    fun setTitle(title:String){
+        Handler(Looper.getMainLooper()).postDelayed({
+            run {
+                dialogTitle.text = title
+            }
+        }, 100)
     }
 
 
