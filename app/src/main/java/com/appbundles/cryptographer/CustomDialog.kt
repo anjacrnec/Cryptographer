@@ -209,6 +209,10 @@ class CustomDialog():DialogFragment(){
         }, 100)
     }
 
+    fun getTitle():String{
+       return dialogTitle.text.toString()
+    }
+
 
     override fun onResume() {
         dialog?.window?.setLayout(ConstraintLayout.LayoutParams.MATCH_PARENT, ConstraintLayout.LayoutParams.WRAP_CONTENT)

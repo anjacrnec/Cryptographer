@@ -3,6 +3,7 @@ package com.appbundles.cryptographer
 import CryptographerFragment
 import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -32,6 +33,7 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     private lateinit var viewModel: MainViewModel
     val TAG_CRYPTOGRAPHER_FRAGMENT = "cryptographer"
     val TAG_EXERCISES_FRAGMENT = "exercises"
+    val TAG_STATUS_FRAGMENT="status"
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -86,22 +88,27 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
         viewModel.statusValue.observe(this, Observer {status->
            val dialogDownloading:CustomDialog?= supportFragmentManager.findFragmentByTag(CustomDialog.DIALOG_DOWNLOADING.toString()) as CustomDialog?
+           val statusFragment:StatusFragment?=supportFragmentManager.findFragmentByTag(TAG_STATUS_FRAGMENT) as StatusFragment?
             when(status){
                 SplitInstallSessionStatus.PENDING->{
                     dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_pending))
+                    statusFragment?.updateStatus(LanguageUtil.getResString(this,R.string.status_pending),null,true)
                 }
 
                 SplitInstallSessionStatus.DOWNLOADING->{
                     dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_downloading))
+                    statusFragment?.updateStatus(LanguageUtil.getResString(this,R.string.status_downloading),null,true)
                 }
 
                 SplitInstallSessionStatus.INSTALLING->{
                     dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_installing))
+                    statusFragment?.updateStatus(LanguageUtil.getResString(this,R.string.status_installing),null,true)
                 }
 
                 SplitInstallSessionStatus.INSTALLED->{
                     dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_installed))
                     dialogDownloading?.setIcon(R.drawable.ic_placeholder)
+                    statusFragment?.updateStatus(LanguageUtil.getResString(this,R.string.status_installed),null,true)
                 }
 
                 SplitInstallSessionStatus.CANCELED->{
@@ -110,6 +117,7 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
 
                 SplitInstallSessionStatus.FAILED->{
                     dialogDownloading?.setTitle(LanguageUtil.getResString(this,R.string.status_error))
+                    statusFragment?.updateStatus(LanguageUtil.getResString(this,R.string.status_error),null,true)
                 }
             }
         })
@@ -228,6 +236,11 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
         }
     }
 
+    private fun showStatusFragment(status:String, progress:Boolean){
+        val statusFragment=StatusFragment.newInstance(status,progress)
+        supportFragmentManager.beginTransaction().add(R.id.mainStatusContainer,statusFragment,TAG_STATUS_FRAGMENT).commit()
+    }
+
     private fun navigateToTutorial(){
         val intent = Intent(Intent.ACTION_VIEW).setClassName(
             BuildConfig.APPLICATION_ID,
@@ -269,6 +282,7 @@ class MainActivity : BaseSplitActivity(),CustomDialog.OnClickListener {
     override fun onDownloadingHide() {
         mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
         dialogDownloading.dismiss()
+        showStatusFragment("status",true)
     }
 
 }
