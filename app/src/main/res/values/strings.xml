@@ -52,4 +52,6 @@
     <string name="status_installed">Installed</string>
     <string name="status_canceled">Canceled</string>
     <string name="status_error">Error</string>
+
+    <string name="ok">Ok</string>
 </resources>

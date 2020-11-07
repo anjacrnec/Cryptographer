@@ -4,12 +4,12 @@
 
     <item
         android:id="@+id/navCryptography"
-        android:icon="@drawable/ic_placeholder"
+        android:icon="@drawable/ic_cryptographer"
         android:title="@string/cryptography" />
 
     <item
         android:id="@+id/navExercises"
-        android:icon="@drawable/ic_placeholder"
+        android:icon="@drawable/ic_exercises"
         android:title="@string/exercises" />
 
 
