@@ -24,6 +24,10 @@
     <string name="reverse">Reverse orthogonal</string>
     <string name="diagonal">Diagonal</string>
     <string name="include_sentences">Sentences</string>
+    <string name="ciphers_disabled">At least one cipher needs to be enabled to generate an exercise</string>
+
+    <string name="correct_answer">Correct answer</string>
+    <string name="wrong_answer">Wrong answer</string>
 
     <style name="Hint2">
         <item name="android:textColor">@color/color_primary_medium</item>

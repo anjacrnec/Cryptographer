@@ -1,54 +1,76 @@
 package com.appbundles.exercises
 
 import android.content.Context
-import com.appbundles.cryptographer.cryptography.Cipher
 import rita.RiTa
 
+
 class Exercise(
-    var method:String,
-    var type:String,
-    var plainText:String,
-    var cipherText:String,
-    var key:String,
-    var body:String,
-    var answer:String) {
+     var method:String,
+     var type:String,
+     var plainText:String,
+     var cipherText:String,
+     var key:String) {
 
+     lateinit var body: String
+      var answer:String
 
+     init{
+             if(type=="encrypt")
+                 answer=cipherText
+             else
+                 answer=plainText
+     }
 
-    companion object{
-        const val ENCRYPT="encrypt"
-        const val DECRYPT="decrypt"
-        val EXERCISES_TYPES= arrayOf(ENCRYPT, DECRYPT)
-    }
+     companion object{
+         const val CAESAR="caeser"
+         const val AFFINE="affine"
+         const val VIGENERE="vigenere"
+         const val PLAYFAIR="playfair"
+         const val ORTHO="ortho"
+         const val ORTHO_REVERSE="ortho reverse"
+         const val DIAGONAL="diagonal"
+         const  val ENCRYPT = "encrypt"
+         const val DECRYPT = "decrypt"
+          val EXERCISES_TYPES = arrayOf(ENCRYPT, DECRYPT)
 
-     private fun generateAnswer():String{
-        if(type== ENCRYPT)
-            return cipherText
-        else
-            return plainText
-    }
+         fun generateMethod(
+             caesarExercise:Boolean,
+             affineExercise:Boolean,
+             vigenereExercise:Boolean,
+             playfairExercise:Boolean,
+             orthogonalExercise:Boolean,
+             reverseOrthoExercise:Boolean,
+             diagonalExercise:Boolean
+         ):String{
+             var arrayEnabledExercises:ArrayList<String> = ArrayList()
 
-    private fun generateBody(context: Context):String{
-        val res=context.resources
-        if (type === ENCRYPT) {
-            body = res.getString(
-                R.string.exercise_body,
-                method,
-                res.getString(R.string.ek),
-                res.getString(R.string.pt),
-                plainText,
-                key
-            )
-        } else {
-            body = res.getString(
-                R.string.exercise_body,
-                method,
-                res.getString(R.string.dk),
-                res.getString(R.string.ct),
-                cipherText,
-                key
-            )
-        }
-        return body.toString()
-    }
+             if(caesarExercise)
+                 arrayEnabledExercises.add(Exercise.CAESAR)
+             if(affineExercise)
+                 arrayEnabledExercises.add(Exercise.AFFINE)
+             if(vigenereExercise)
+                 arrayEnabledExercises.add(Exercise.VIGENERE)
+             if(playfairExercise)
+                 arrayEnabledExercises.add(Exercise.PLAYFAIR)
+             if(orthogonalExercise)
+                 arrayEnabledExercises.add(Exercise.ORTHO)
+             if(reverseOrthoExercise)
+                 arrayEnabledExercises.add(Exercise.ORTHO_REVERSE)
+             if(diagonalExercise)
+                 arrayEnabledExercises.add(Exercise.DIAGONAL)
+
+             val method= RiTa.randomItem(arrayEnabledExercises) as String
+
+             return method
+         }
+
+        /* fun generateExercise(method: String,context: Context):Exercise{
+             when(method){
+                 CAESAR ->   return CaesarExercise().generate(context)
+                 AFFINE -> return AffineExercise().generate(context)
+                 VIGENERE-> return VigenereExercise().generate(context)
+             }
+
+         }*/
+     }
 }

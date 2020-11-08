@@ -8,7 +8,7 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.appbundles.cryptographer.cryptography.CaeserCipher
+import com.appbundles.cryptographer.cryptography.CaesarCipher
 import kotlinx.android.synthetic.main.fragment_cipher.*
 
 class CaeserFragment :CipherFragment(){
@@ -42,13 +42,13 @@ class CaeserFragment :CipherFragment(){
     }
 
     override fun encrypt() {
-        val output = CaeserCipher.encrypt(cipherInput.text.toString(), cipherKey.text.toString().toInt())
+        val output = CaesarCipher.encrypt(cipherInput.text.toString(), cipherKey.text.toString().toInt())
         clearFocus(cipherInput,cipherKey)
         cipherOutput.setText(output)
     }
 
     override fun decrypt() {
-        val output = CaeserCipher.decrypt(cipherInput.text.toString(), cipherKey.text.toString().toInt())
+        val output = CaesarCipher.decrypt(cipherInput.text.toString(), cipherKey.text.toString().toInt())
         clearFocus(cipherInput,cipherKey)
         cipherOutput.setText(output)
     }
@@ -69,7 +69,7 @@ class CaeserFragment :CipherFragment(){
         cipherKey.addTextChangedListener(object : TextWatcher {
             override fun beforeTextChanged(s: CharSequence, start: Int, count: Int, after: Int) {}
             override fun onTextChanged(s: CharSequence, start: Int, before: Int, count: Int) {
-                val enableButtons = !(s.toString().isEmpty() || !CaeserCipher.isKeyValid(
+                val enableButtons = !(s.toString().isEmpty() || !CaesarCipher.isKeyValid(
                     s.toString().toInt()
                 ) || cipherInput.text.toString().isEmpty())
                 enableButtons(cipherEncryptBtn, cipherDecryptBtn, enableButtons)

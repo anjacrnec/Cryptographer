@@ -42,7 +42,7 @@
 
 
             <net.cachapa.expandablelayout.ExpandableLayout
-                android:id="@+id/exerciseExpand"
+                android:id="@+id/exExpand"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="#FFFFFF"
@@ -61,7 +61,7 @@
 
 
                     <com.google.android.material.chip.ChipGroup
-                        android:id="@+id/chipgroupCiphers"
+                        android:id="@+id/exChipGroup"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_gravity="fill"
@@ -69,7 +69,7 @@
                         app:singleLine="false">
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipCaeser"
+                            android:id="@+id/exChipCaesar"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -81,7 +81,7 @@
                             app:closeIconVisible="false" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipVigenere"
+                            android:id="@+id/exChipVigenere"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -90,7 +90,7 @@
                             android:text="@string/vigenere" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipAffine"
+                            android:id="@+id/exChipAffine"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -99,7 +99,7 @@
                             android:text="@string/affine" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipPlayfair"
+                            android:id="@+id/exChipPlayfair"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -108,7 +108,7 @@
                             android:text="@string/playfair" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipOrtho"
+                            android:id="@+id/exChipOrtho"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -118,7 +118,7 @@
                             android:text="@string/ortho" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipDiagonal"
+                            android:id="@+id/exChipDiagonal"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -128,7 +128,7 @@
                             android:text="@string/diagonal" />
 
                         <com.google.android.material.chip.Chip
-                            android:id="@+id/chipOrthoReverse"
+                            android:id="@+id/exChipOrthoReverse"
                             style="@style/ChipStyle"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -138,17 +138,6 @@
                             android:text="@string/reverse" />
 
                     </com.google.android.material.chip.ChipGroup>
-
-                    <com.google.android.material.chip.Chip
-                        android:id="@+id/chipSentences"
-                        style="@style/ChipStyle"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginTop="5dp"
-                        android:layout_marginStart="1dp"
-                        android:layout_weight="1"
-                        android:checked="false"
-                        android:text="@string/include_sentences" />
 
                     <View
                         android:id="@+id/divider9"
@@ -163,7 +152,7 @@
 
 
             <TextView
-                android:id="@+id/exerciseBody"
+                android:id="@+id/exBody"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
 
@@ -197,7 +186,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exerciseCipher"
+                    android:id="@+id/exCipher"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -233,7 +222,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exercisePt"
+                    android:id="@+id/exPlainText"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -268,7 +257,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exerciseKey"
+                    android:id="@+id/exKey"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -303,7 +292,7 @@
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/exerciseCt"
+                    android:id="@+id/exCipherText"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginStart="10dp"
@@ -324,7 +313,7 @@
 
 
             <com.google.android.material.textfield.TextInputLayout
-                android:id="@+id/exerciseAnswerLayout"
+                android:id="@+id/exAnswerLayout"
                 style="@style/CryptographerEditText"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -336,7 +325,7 @@
 
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/exerciseAnswer"
+                    android:id="@+id/exAnswer"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:drawableEnd="@drawable/ic_error_accent"
@@ -351,7 +340,7 @@
                 android:layout_height="match_parent">
 
                 <com.google.android.material.floatingactionbutton.FloatingActionButton
-                    android:id="@+id/btnSave"
+                    android:id="@+id/exSaveBtn"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
@@ -367,14 +356,14 @@
                     android:orientation="horizontal">
 
                     <Button
-                        android:id="@+id/exerciseSeeAnswerBtn"
+                        android:id="@+id/exAnswerBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:text="@string/generate_answer" />
 
                     <Button
-                        android:id="@+id/exerciseNextBtn"
+                        android:id="@+id/exNextBtn"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

@@ -3,13 +3,13 @@ package com.appbundles.cryptographer.cryptography;
 
 
 
-public  class CaeserCipher extends  SubstitiutionCipher{
+public  class CaesarCipher extends  SubstitiutionCipher{
 
 
 
     int key;
 
-    public CaeserCipher(String plainText, int key)
+    public CaesarCipher(String plainText, int key)
     {
         this.plainText=plainText;
         this.key=key;
