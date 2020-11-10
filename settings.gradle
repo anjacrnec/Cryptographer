@@ -1,3 +1,4 @@
+include ':images'
 include ':exercises'
 include ':tutorial'
 include ':app'

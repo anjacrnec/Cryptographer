@@ -6,10 +6,10 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
 import com.appbundles.cryptographer.MainActivity
 import com.appbundles.cryptographer.Storage
 import com.appbundles.cryptographer.features.Features
+import com.appbundles.images.ImageUtility
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 
 

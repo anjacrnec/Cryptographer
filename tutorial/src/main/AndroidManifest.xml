@@ -11,6 +11,7 @@
         </dist:delivery>
 
         <dist:fusing dist:include="true" />
+        <dist:removable value="true" />
     </dist:module>
 
     <application>

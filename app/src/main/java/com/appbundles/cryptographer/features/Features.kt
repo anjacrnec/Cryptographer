@@ -6,10 +6,9 @@ import com.appbundles.cryptographer.R.layout
 
 class Features {
 
-    class Base{
-        companion object{
-            const val FEATURE_DIRECTORY="com.appbundles.cryptographer."
-
+    class Images {
+        companion object {
+            const val FEATURE_NAME = "images"
         }
     }
 

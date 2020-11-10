@@ -190,7 +190,7 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener {
     private fun initFeatures(){
         if(isTutorialInstalled()
             && Storage.getUninstallTutorial(applicationContext))
-            splitInstallManager.deferredUninstall(arrayListOf(Features.Tutorial.FEATURE_NAME))
+            splitInstallManager.deferredUninstall(arrayListOf(Features.Tutorial.FEATURE_NAME,Features.Images.FEATURE_NAME))
     }
 
     private fun showExercisesDownloadingDialog(){
