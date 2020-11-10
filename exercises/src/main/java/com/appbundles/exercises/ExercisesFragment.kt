@@ -6,18 +6,15 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProvider
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_exercises.*
-import com.appbundles.cryptographer.R.drawable
 
 
 class ExercisesFragment : BaseSplitFragment(){
 
-    private lateinit var viewModel: ExercisesViewModel
+
     private lateinit var exercise: Exercise
 
     override fun onCreateView(
@@ -32,14 +29,15 @@ class ExercisesFragment : BaseSplitFragment(){
 
         setChipChangeListeners()
 
-        initViewModel()
-
         generateExercise()
+
+        showExercise()
 
         setAnswerTextChangeListener()
 
         exNextBtn.setOnClickListener {
             generateExercise()
+            showExercise()
         }
 
         exAnswerBtn.setOnClickListener {
@@ -52,33 +50,20 @@ class ExercisesFragment : BaseSplitFragment(){
 
     }
 
-    private fun initViewModel(){
-        viewModel = ViewModelProvider(this).get(ExercisesViewModel::class.java)
-
-        viewModel.methodValue.observe(viewLifecycleOwner, Observer {
-            when (it) {
-                Exercise.CAESAR -> exercise = CaesarExercise().generate(context!!)
-                Exercise.AFFINE -> exercise = AffineExercise().generate(context!!)
-                Exercise.VIGENERE -> exercise = VigenereExercise().generate(context!!)
-                Exercise.PLAYFAIR -> exercise = PlayfairExercise().generate(context!!)
-                Exercise.ORTHO -> exercise = OrthogonalExercise().generate(context!!)
-                Exercise.ORTHO_REVERSE -> exercise = ReverseOrthogonalExercise().generate(context!!)
-                Exercise.DIAGONAL -> exercise = DiagonalExercise().generate(context!!)
-            }
-            showExercise()
-        })
-    }
 
     private fun generateExercise(){
-        viewModel.generateExercise(
-            exChipCaesar.isChecked,
-            exChipAffine.isChecked,
-            exChipVigenere.isChecked,
-            exChipPlayfair.isChecked,
-            exChipOrtho.isChecked,
-            exChipOrthoReverse.isChecked,
-            exChipDiagonal.isChecked
+        val method=RandomUtil.randomItem(
+            hashMapOf(
+                Exercise.CAESAR to exChipCaesar.isChecked,
+                Exercise.AFFINE to exChipAffine.isChecked,
+                Exercise.VIGENERE to exChipVigenere.isChecked,
+                Exercise.PLAYFAIR to exChipPlayfair.isChecked,
+                Exercise.ORTHO to exChipOrtho.isChecked,
+                Exercise.ORTHO_REVERSE to exChipOrthoReverse.isChecked,
+                Exercise.DIAGONAL to exChipDiagonal.isChecked
+            )
         )
+        exercise= Exercise.generateExercise(method,context!!)
     }
 
     private fun showExerciseAnswer(){

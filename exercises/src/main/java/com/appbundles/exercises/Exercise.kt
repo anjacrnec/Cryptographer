@@ -33,44 +33,18 @@ class Exercise(
          const val DECRYPT = "decrypt"
           val EXERCISES_TYPES = arrayOf(ENCRYPT, DECRYPT)
 
-         fun generateMethod(
-             caesarExercise:Boolean,
-             affineExercise:Boolean,
-             vigenereExercise:Boolean,
-             playfairExercise:Boolean,
-             orthogonalExercise:Boolean,
-             reverseOrthoExercise:Boolean,
-             diagonalExercise:Boolean
-         ):String{
-             var arrayEnabledExercises:ArrayList<String> = ArrayList()
 
-             if(caesarExercise)
-                 arrayEnabledExercises.add(Exercise.CAESAR)
-             if(affineExercise)
-                 arrayEnabledExercises.add(Exercise.AFFINE)
-             if(vigenereExercise)
-                 arrayEnabledExercises.add(Exercise.VIGENERE)
-             if(playfairExercise)
-                 arrayEnabledExercises.add(Exercise.PLAYFAIR)
-             if(orthogonalExercise)
-                 arrayEnabledExercises.add(Exercise.ORTHO)
-             if(reverseOrthoExercise)
-                 arrayEnabledExercises.add(Exercise.ORTHO_REVERSE)
-             if(diagonalExercise)
-                 arrayEnabledExercises.add(Exercise.DIAGONAL)
-
-             val method= RiTa.randomItem(arrayEnabledExercises) as String
-
-             return method
+        fun generateExercise(method: String,context: Context):Exercise{
+            return when(method){
+                CAESAR -> CaesarExercise().generate(context)
+                AFFINE -> AffineExercise().generate(context)
+                VIGENERE-> VigenereExercise().generate(context)
+                PLAYFAIR-> PlayfairExercise().generate(context)
+                ORTHO-> OrthogonalExercise().generate(context)
+                ORTHO_REVERSE-> ReverseOrthogonalExercise().generate(context)
+                DIAGONAL-> DiagonalExercise().generate(context)
+                else-> CaesarExercise().generate(context)
+            }
          }
-
-        /* fun generateExercise(method: String,context: Context):Exercise{
-             when(method){
-                 CAESAR ->   return CaesarExercise().generate(context)
-                 AFFINE -> return AffineExercise().generate(context)
-                 VIGENERE-> return VigenereExercise().generate(context)
-             }
-
-         }*/
      }
 }
