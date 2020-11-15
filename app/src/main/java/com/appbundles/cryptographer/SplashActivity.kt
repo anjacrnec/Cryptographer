@@ -40,11 +40,9 @@ class SplashActivity : BaseSplitActivity(){
     }
 
     private fun navigateToTutorial(){
-        val intent = Intent(Intent.ACTION_VIEW).setClassName(
-            BuildConfig.APPLICATION_ID,
-            Features.Tutorial.ACTIVITY_TUTORIAL_DIRECTORY)
-        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+        val intent = ActivityUtil.TutorialActivity(this)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+        intent?.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
         finish()
     }

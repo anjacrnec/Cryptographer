@@ -1,27 +1,39 @@
 package com.appbundles.exercises
 
+import android.content.Context
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
+import com.appbundles.cryptographer.AlertDialog
+import com.appbundles.cryptographer.App
+import com.appbundles.cryptographer.MainCallback
+import com.appbundles.cryptographer.features.Features
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_exercises.*
 
 
-class ExercisesFragment : BaseSplitFragment(){
+class ExercisesFragment : BaseSplitFragment(),AlertDialog.OnClickListener{
 
 
     private lateinit var exercise: Exercise
+    private lateinit var mainCallback: MainCallback
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
         return inflater.inflate(R.layout.fragment_exercises, container, false)
+    }
+
+    override fun onAttach(context: Context) {
+        super.onAttach(context)
+        mainCallback = context as MainCallback
     }
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
@@ -48,8 +60,21 @@ class ExercisesFragment : BaseSplitFragment(){
             exExpand.toggle()
         }
 
-    }
 
+        exSaveBtn.setOnClickListener{
+            if(App.getStorageFeatureUtil().isInstalled()){
+
+            } else {
+                if(mainCallback.getCurrentSession().type!=App.getStorageFeatureUtil().featureName)
+                    mainCallback.showDialog()
+                else
+                    Snackbar.make(exSaveBtn,"This module is already being downloaded",Snackbar.LENGTH_SHORT).show()
+            }
+
+
+        }
+
+    }
 
     private fun generateExercise(){
         val method=RandomUtil.randomItem(
@@ -135,7 +160,8 @@ class ExercisesFragment : BaseSplitFragment(){
         chip.setOnCheckedChangeListener { _, _ ->
             enableNextExercise()
         }
-
     }
+
+
 
 }

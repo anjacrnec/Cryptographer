@@ -1,11 +1,9 @@
 package com.appbundles.cryptographer.features
 
 class Session(
-    id:Int,
-    type:String,
-    status:String?
+    val id:Int,
+    val type:String,
+    val status:Int?
 ) {
-    companion object{
-        val SESSION_EXERCISE="exercise"
-    }
+
 }

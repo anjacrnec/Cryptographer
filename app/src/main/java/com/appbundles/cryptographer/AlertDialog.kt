@@ -15,13 +15,14 @@ import androidx.fragment.app.DialogFragment
 
 class AlertDialog():DialogFragment(){
 
-    private lateinit var title: String
-    private lateinit var body: String
+    private  var title: String?=null
+    private  var body: String?=null
     private  var optionOne: String?=null
     private var optionTwo: String?=null
     private  var optionThree: String?=null
     private var check:String?=null
     private var icon:Int?=null
+    private var progress:Boolean?=null
 
     private lateinit var dialogTitle:TextView
     private lateinit var dialogBody:TextView
@@ -36,20 +37,24 @@ class AlertDialog():DialogFragment(){
     private var onClickListener: OnClickListener? = null
 
     interface OnClickListener {
-        fun onDownloadingDismiss(){}
+
         fun onDownloadingHide(){}
         fun onDownloadingCancel(){}
-        fun onDownloadSave(){}
+        fun onDownloadingFinish(){}
+
+
+        fun onDownloadStorageYes(){}
+        fun onDownloadStorageNo(){}
+
+        fun onDownloadExercisesNo(){}
         fun onDownloadExerciseYes(includeSave:Boolean){}
         fun onDownloadExerciseNever(){}
-        fun onCancelDialog(){}
-
     }
 
     companion object{
 
         const val DIALOG_DOWNLOAD_EXERCISE= 1
-        const val DIALOG_DOWNLOAD_SAVE = 2
+        const val DIALOG_DOWNLOAD_STORAGE = 2
         const val DIALOG_DOWNLOAD_TUTORIAL=3
         const val DIALOG_DOWNLOADING= 4
 
@@ -61,33 +66,27 @@ class AlertDialog():DialogFragment(){
         private const val DIALOG_CB="cb"
         private const val DIALOG_ICON="icon"
         private const val DIALOG_TYPE="type"
+        private const val DIALOG_PROGRESS="progress"
 
-
-        fun newInstance(title: String, body: String, optionOne: String, optionTwo: String):AlertDialog{
-            val args = Bundle()
-            args.putString(DIALOG_TITLE, title)
-            args.putString(DIALOG_BODY, body)
-            args.putString(DIALOG_OPTION_ONE, optionOne)
-            args.putString(DIALOG_OPTION_TWO, optionTwo)
-            val fragment = AlertDialog()
-            fragment.arguments = args
-            args.putInt(DIALOG_TYPE, DIALOG_DOWNLOADING)
-            return fragment
+        fun newInstance(type:Int):AlertDialog?{
+            when(type){
+                DIALOG_DOWNLOAD_EXERCISE->
+                    return  newInstance(
+                       DIALOG_DOWNLOAD_EXERCISE,
+                        "Title",
+                        "In order to use this feature you need to...",
+                        "Include exercises feature",
+                        "Yes",
+                        "No",
+                        "Never",
+                        R.drawable.ic_download,
+                        false
+                    )
+            }
+            return null
         }
 
-        fun newInstance(title: String, body: String, optionOne: String, optionTwo: String, icon:Int):AlertDialog{
-            val args = Bundle()
-            args.putString(DIALOG_TITLE, title)
-            args.putString(DIALOG_BODY, body)
-            args.putString(DIALOG_OPTION_ONE, optionOne)
-            args.putString(DIALOG_OPTION_TWO, optionTwo)
-            args.putInt(DIALOG_ICON,icon)
-            val fragment = AlertDialog()
-            fragment.arguments = args
-            return fragment
-        }
-
-        fun newInstance(title: String, body: String, check:String?, optionOne: String, optionTwo: String, optionThree: String, icon:Int): AlertDialog {
+        fun newInstance(type:Int,title: String?, body: String?, check:String?, optionOne: String?, optionTwo: String?, optionThree: String?, icon:Int?,progress:Boolean): AlertDialog {
             val args = Bundle()
             args.putString(DIALOG_TITLE, title)
             args.putString(DIALOG_BODY, body)
@@ -95,8 +94,11 @@ class AlertDialog():DialogFragment(){
             args.putString(DIALOG_OPTION_TWO, optionTwo)
             args.putString(DIALOG_OPTION_THREE, optionThree)
             args.putString(DIALOG_CB, check)
-            args.putInt(DIALOG_ICON,icon)
-            args.putInt(DIALOG_TYPE, DIALOG_DOWNLOAD_EXERCISE)
+            if (icon != null) {
+                args.putInt(DIALOG_ICON,icon)
+            }
+            args.putInt(DIALOG_TYPE, type)
+            args.putBoolean(DIALOG_PROGRESS,progress)
             val fragment = AlertDialog()
             fragment.arguments = args
             return fragment
@@ -105,13 +107,14 @@ class AlertDialog():DialogFragment(){
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        title = arguments?.getString(DIALOG_TITLE).toString()
-        body = arguments?.getString(DIALOG_BODY).toString()
-        optionOne = arguments?.getString(DIALOG_OPTION_ONE).toString()
-        optionTwo = arguments?.getString(DIALOG_OPTION_TWO).toString()
-        optionThree=arguments?.getString(DIALOG_OPTION_THREE).toString()
+        title = arguments?.getString(DIALOG_TITLE)
+        body = arguments?.getString(DIALOG_BODY)
+        optionOne = arguments?.getString(DIALOG_OPTION_ONE)
+        optionTwo = arguments?.getString(DIALOG_OPTION_TWO)
+        optionThree=arguments?.getString(DIALOG_OPTION_THREE)
         check=arguments?.getString(DIALOG_CB)
         icon=arguments?.getInt(DIALOG_ICON)
+        progress=arguments?.getBoolean(DIALOG_PROGRESS)
         dialogType= arguments?.getInt(DIALOG_TYPE)!!
 
     }
@@ -132,36 +135,63 @@ class AlertDialog():DialogFragment(){
         dialogIcon=view.findViewById(R.id.dialog_icon)
         dialogProgress=view.findViewById(R.id.dialog_progress)
 
-        dialogTitle.text=title
-        dialogBody.text=body
-
-         dialogIcon.setImageResource(icon!!)
-
-        if(check.isNullOrEmpty())
-            dialogCheckbox.visibility=View.GONE
+        if(!title.isNullOrEmpty())
+            dialogTitle.text=title
         else
-            dialogCheckbox.text=check
+            dialogTitle.visibility=View.GONE
 
-        dialogOptionOne.text=optionOne
-        dialogOptionTwo.text=optionTwo
-        dialogOptionThree.text=optionThree
+        if(!body.isNullOrEmpty())
+            dialogBody.text=body
+        else
+            dialogBody.visibility=View.GONE
+
+        if(icon!=null)
+            dialogIcon.setImageResource(icon!!)
+        else
+            dialogIcon.visibility=View.VISIBLE
+
+        if(!check.isNullOrEmpty())
+            dialogCheckbox.text=check
+        else
+            dialogCheckbox.visibility=View.GONE
+
+        if(!optionOne.isNullOrEmpty())
+             dialogOptionOne.text=optionOne
+        else
+            dialogOptionOne.visibility=View.GONE
+
+        if(!optionTwo.isNullOrEmpty())
+            dialogOptionTwo.text=optionTwo
+        else
+            dialogOptionTwo.visibility=View.GONE
+
+        if(!optionThree.isNullOrEmpty())
+             dialogOptionThree.text=optionThree
+        else
+            dialogOptionThree.visibility=View.GONE
+
+        if(progress!=null && progress==true)
+            dialogProgress.visibility=View.VISIBLE
+        else
+            dialogProgress.visibility=View.GONE
 
         when(dialogType){
 
+            DIALOG_DOWNLOAD_STORAGE->{
+                dialogOptionOne.setOnClickListener { onClickListener?.onDownloadStorageYes() }
+                dialogOptionTwo.setOnClickListener { onClickListener?.onDownloadStorageNo() }
+            }
+
             DIALOG_DOWNLOAD_EXERCISE->{
-                dialogProgress.visibility=View.GONE
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadExerciseYes(dialogCheckbox.isChecked) }
-                dialogOptionTwo.setOnClickListener { onClickListener?.onCancelDialog() }
+                dialogOptionTwo.setOnClickListener { onClickListener?.onDownloadExercisesNo() }
                 dialogOptionThree.setOnClickListener { onClickListener?.onDownloadExerciseNever() }
             }
 
             DIALOG_DOWNLOADING->{
-                dialogIcon.visibility=View.GONE
-                dialogBody.visibility=View.GONE
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadingHide() }
                 dialogOptionTwo.setOnClickListener {  onClickListener?.onDownloadingCancel()}
-                dialogOptionThree.setOnClickListener { onClickListener?.onDownloadingDismiss() }
-                dialogOptionThree.visibility=View.GONE
+                dialogOptionThree.setOnClickListener { onClickListener?.onDownloadingFinish() }
             }
         }
 

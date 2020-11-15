@@ -4,7 +4,10 @@ import android.content.Context
 import android.os.Bundle
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
+import com.appbundles.cryptographer.AlertDialog
 import com.google.android.play.core.splitcompat.SplitCompat
+import kotlin.concurrent.fixedRateTimer
 
 
 abstract class BaseSplitActivity : AppCompatActivity() {
@@ -19,9 +22,41 @@ abstract class BaseSplitActivity : AppCompatActivity() {
         SplitCompat.install(this)
     }
 
-    fun loadFragment(container: Int, fragment: Fragment, tag:String){
-        supportFragmentManager.beginTransaction().add(container, fragment).commit()
+
+
+    fun findFragmentByTag(tag:String):Fragment?{
+        return supportFragmentManager.findFragmentByTag(tag)
     }
+
+    fun hideFragment(fragment: Fragment?):Boolean{
+        fragment?.let {
+            supportFragmentManager.beginTransaction().hide(fragment).commit()
+            return true
+        }
+        return false
+    }
+
+    fun showFragment(fragment: Fragment?){
+        fragment?.let {
+            supportFragmentManager.beginTransaction().show(fragment).commit()
+        }
+    }
+
+    fun loadFragment(container: Int, fragment: Fragment, tag:String){
+        supportFragmentManager.beginTransaction().add(container, fragment,tag).commit()
+    }
+
+    fun loadHiddenFragment(container: Int, fragment: Fragment, tag:String){
+        supportFragmentManager.beginTransaction().add(container, fragment,tag).hide(fragment).commit()
+    }
+
+    fun removeFragment(fragment: Fragment?){
+        fragment?.let {
+            supportFragmentManager.beginTransaction().remove(fragment).commit()
+        }
+    }
+
+
 
 }
 

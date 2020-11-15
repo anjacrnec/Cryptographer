@@ -9,7 +9,7 @@ abstract class BaseSplitFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        SplitCompat.install(activity)
+        SplitCompat.install(context)
     }
 
 

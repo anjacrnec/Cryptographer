@@ -55,4 +55,5 @@
 
     <string name="ok">Ok</string>
     <string name="title_images">Images</string>
+    <string name="title_exercises_storage">Exercises Storage</string>
 </resources>

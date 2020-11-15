@@ -6,7 +6,9 @@ import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.appbundles.cryptographer.features.Features
+import com.appbundles.cryptographer.features.Session
 import com.google.android.play.core.splitinstall.SplitInstallManager
+import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
@@ -15,13 +17,13 @@ import com.google.android.play.core.tasks.OnSuccessListener
 
 class MainViewModel:ViewModel() {
 
-    private val sessionId = MutableLiveData<Int>()
-    val sessionIdValue: LiveData<Int> = sessionId
+    private val session = MutableLiveData<Session>()
+    val sessionValue: LiveData<Session> = session
 
     private val status = MutableLiveData<Int>()
     val statusValue: LiveData<Int> = status
 
-    fun initSplitListener(splitInstallManager: SplitInstallManager) :SplitInstallStateUpdatedListener {
+    fun initSplitListener() :SplitInstallStateUpdatedListener {
         var listener = SplitInstallStateUpdatedListener { state ->
             when (state.status()) {
 
@@ -52,16 +54,22 @@ class MainViewModel:ViewModel() {
         return listener
     }
 
-    fun installExercises(splitInstallManager: SplitInstallManager){
-        val requestFeature = SplitInstallRequest.newBuilder().addModule(Features.Exercises.FEATURE_NAME).build()
-        splitInstallManager
-            .startInstall(requestFeature)
+    fun install(features:List<String>){
+        val requestFeatureBuilder = SplitInstallRequest.newBuilder()
+        var type:String=""
+        for(feature in features) {
+            type=type+feature
+            requestFeatureBuilder.addModule(feature)
+        }
+       val request= requestFeatureBuilder.build()
+        App.getSplitInstallManager()
+            .startInstall(request)
             .addOnSuccessListener(OnSuccessListener<Int> {
-                sessionId.postValue(it)
-            }
-            )
+                session.postValue(Session(it, type,null))
+             })
             .addOnFailureListener(OnFailureListener {
 
             })
     }
+
 }

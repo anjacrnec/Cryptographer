@@ -1,10 +1,9 @@
 package com.appbundles.exercises
 
 import android.content.Context
-import com.appbundles.cryptographer.LanguageUtil
+import com.appbundles.cryptographer.ResUtil
 import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.AffineCipher
-import com.appbundles.cryptographer.cryptography.Cipher
 import rita.RiTa
 
 class AffineExercise:ExerciseImpl() {
@@ -12,7 +11,7 @@ class AffineExercise:ExerciseImpl() {
     override fun generate(context: Context): Exercise {
         var cipher=generateCipher()
         val exercise= Exercise(
-            method = LanguageUtil.getResString(context, R.string.affine_cipher),
+            method = ResUtil.getString(context, R.string.affine_cipher),
             type = generateType(),
             plainText = cipher.plainText,
             cipherText = cipher.cipherText,
