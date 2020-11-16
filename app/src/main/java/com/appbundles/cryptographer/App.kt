@@ -15,12 +15,31 @@ class App:SplitCompatApplication() {
 
         splitInstallManager= SplitInstallManagerFactory.create(context)
 
+        mainModule=Feature(
+            this,
+            "app",
+            "com.appbundles.app.",
+            null,
+            null,
+            true
+        )
+
+        imageFeatureUtil=Feature(
+            this,
+            "images",
+            "com.appbundles.images.",
+            null,
+            null,
+            false
+        )
+
         tutorialFeatureUtil= Feature(
             this,
             "tutorial",
             "com.appbundles.tutorial.",
             null,
-            arrayListOf("TutorialActivity")
+            arrayListOf("TutorialActivity"),
+        false
         )
 
         exerciseFeatureUtil= Feature(
@@ -28,16 +47,18 @@ class App:SplitCompatApplication() {
             "exercises",
             "com.appbundles.exercises.",
             arrayListOf("ExercisesFragment"),
-            null)
+            null,
+        false)
 
         storageFeatureUtil= Feature(
             this,
             "exercises_storage",
             "com.appbundles.exercises_storage.",
             arrayListOf("SavedExercises"),
-            null)
+            null,
+        false)
 
-        allFeaturesUtil= arrayListOf(exerciseFeatureUtil, storageFeatureUtil)
+        allFeaturesUtil= arrayListOf(mainModule, exerciseFeatureUtil, storageFeatureUtil, tutorialFeatureUtil)
 
     }
 
@@ -46,6 +67,8 @@ class App:SplitCompatApplication() {
         private lateinit var context:Context
         private lateinit var splitInstallManager:SplitInstallManager
         private lateinit var allFeaturesUtil:List<Feature>
+        private lateinit var mainModule:Feature
+        private lateinit var imageFeatureUtil:Feature
         private lateinit var tutorialFeatureUtil:Feature
         private lateinit var exerciseFeatureUtil:Feature
         private lateinit var storageFeatureUtil:Feature
@@ -71,6 +94,10 @@ class App:SplitCompatApplication() {
 
         fun getTutorialFeatureUtil():Feature{
             return tutorialFeatureUtil
+        }
+
+        fun getImageFeatureutil():Feature{
+            return imageFeatureUtil
         }
     }
 

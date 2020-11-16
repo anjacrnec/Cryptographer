@@ -2,7 +2,6 @@ package com.appbundles.exercises
 
 import android.content.Context
 import com.appbundles.cryptographer.cryptography.Cipher
-import com.appbundles.cryptographer.features.Features
 import com.appbundles.exercises.Exercise.Companion.ENCRYPT
 import com.appbundles.exercises.Exercise.Companion.EXERCISES_TYPES
 import rita.RiTa

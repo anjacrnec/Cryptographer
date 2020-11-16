@@ -1,26 +1,28 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.main
 
-import CryptographerFragment
+import com.appbundles.cryptographer.cryptographer.CryptographerFragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
-import com.appbundles.cryptographer.features.Features
+import com.appbundles.cryptographer.*
+import com.appbundles.cryptographer.alerts.AlertDialog
+import com.appbundles.cryptographer.alerts.AlertFragment
 import com.appbundles.cryptographer.features.Session
 import com.example.bundles.BaseSplitActivity
 import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallback {
+class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallback {
 
 
     private lateinit var session:Session
@@ -30,7 +32,7 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
     private lateinit var splitInstallManager:SplitInstallManager
     private lateinit var listener: SplitInstallStateUpdatedListener
     private lateinit var dialog: AlertDialog
-    private lateinit var dialogDownloading:AlertDialog
+    private lateinit var dialogDownloading: AlertDialog
     private lateinit var viewModel: MainViewModel
     val TAG_CRYPTOGRAPHER_FRAGMENT = "cryptographer"
     val TAG_EXERCISES_FRAGMENT = "exercises"
@@ -41,7 +43,7 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        splitInstallManager=App.getSplitInstallManager()
+        splitInstallManager= App.getSplitInstallManager()
 
         initFeatures()
         initFragments(savedInstanceState)
@@ -87,6 +89,7 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
            this.session=session
         })
 
+        Log.e("TEST_",App.getExerciseFeatureUtil().getLocalFeatureName().toString())
         viewModel.statusValue.observe(this, Observer { status ->
             val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?
             val alertFragment: AlertFragment? = findFragmentByTag(TAG_STATUS_FRAGMENT) as AlertFragment?
@@ -97,11 +100,25 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
                 }
 
                 SplitInstallSessionStatus.DOWNLOADING -> {
-                    dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_downloading))
-                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_downloading), null, true)
+                    dialogDownloading?.setTitle(
+                        ResUtil.getString(
+                            this,
+                            R.string.status_downloading
+                        )
+                    )
+                    alertFragment?.updateStatus(
+                        ResUtil.getString(
+                            this,
+                            R.string.status_downloading
+                        ), null, true)
                 }
 
-                SplitInstallSessionStatus.INSTALLING -> { dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_installing))
+                SplitInstallSessionStatus.INSTALLING -> { dialogDownloading?.setTitle(
+                    ResUtil.getString(
+                        this,
+                        R.string.status_installing
+                    )
+                )
                     alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_installing), null, true)
                 }
 
@@ -111,22 +128,24 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
                     dialogDownloading?.setOptionOne(null)
                     dialogDownloading?.setOptionTwo(null)
                     dialogDownloading?.setOptionThree(ResUtil.getString(this, R.string.ok))
-                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_installed), R.drawable.ic_done, false)
+                    alertFragment?.updateStatus(
+                        ResUtil.getString(this, R.string.status_installed),
+                        R.drawable.ic_done, false)
                     hideAlertFragment(true)
 
-                    if (session.type==App.getExerciseFeatureUtil().featureName) {
+                    if (session.type== App.getExerciseFeatureUtil().featureName) {
                         exercisesFragment = FragmentUtil.ExercisesFragment()
                         if(mainBottomNavigation.menu.findItem(R.id.navExercises).isChecked)
                             loadFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
                         else
                             loadHiddenFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
-                    } else if (session.type==App.getStorageFeatureUtil().featureName) {
-                        storageFragment =FragmentUtil.StorageFragment()
+                    } else if (session.type== App.getStorageFeatureUtil().featureName) {
+                        storageFragment = FragmentUtil.StorageFragment()
                         loadHiddenFragment(R.id.main_fragment_container, storageFragment!!, TAG_STORAGE_FRAGMENT)
                     } else{
                         exercisesFragment = FragmentUtil.ExercisesFragment()
                         loadHiddenFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
-                        storageFragment =FragmentUtil.StorageFragment()
+                        storageFragment = FragmentUtil.StorageFragment()
                         loadHiddenFragment(R.id.main_fragment_container, storageFragment!!, TAG_STORAGE_FRAGMENT)
                     }
 
@@ -140,7 +159,9 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
                 SplitInstallSessionStatus.FAILED -> {
                     dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
                     dialogDownloading?.setIcon(R.drawable.ic_error)
-                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_error), R.drawable.ic_error, true)
+                    alertFragment?.updateStatus(
+                        ResUtil.getString(this, R.string.status_error),
+                        R.drawable.ic_error, true)
                 }
             }
         })
@@ -151,19 +172,19 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
         cryptographerFragment = findFragmentByTag(TAG_CRYPTOGRAPHER_FRAGMENT)
         exercisesFragment = findFragmentByTag(TAG_EXERCISES_FRAGMENT)
         storageFragment = findFragmentByTag(TAG_STORAGE_FRAGMENT)
-        val container=R.id.main_fragment_container
+        val container= R.id.main_fragment_container
 
         if (savedInstanceState == null) {
             cryptographerFragment = CryptographerFragment()
             loadFragment(container, cryptographerFragment!!, TAG_CRYPTOGRAPHER_FRAGMENT)
 
             if(App.getExerciseFeatureUtil().isInstalled()){
-                exercisesFragment=FragmentUtil.ExercisesFragment()
+                exercisesFragment= FragmentUtil.ExercisesFragment()
                 loadHiddenFragment(container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
             }
 
             if(App.getStorageFeatureUtil().isInstalled()){
-                storageFragment=FragmentUtil.StorageFragment()
+                storageFragment= FragmentUtil.StorageFragment()
                 loadHiddenFragment(container, storageFragment!!, TAG_STORAGE_FRAGMENT)
             }
         } else {
@@ -181,13 +202,13 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
             }
 
             if (App.getStorageFeatureUtil().isInstalled() && menu.size()<3) {
-                val itemStorage=ResUtil.getString("storage")
-                val itemStorageIcon=ResUtil.getDrawable("ic_storage")
+                val itemStorage= ResUtil.getString("storage")
+                val itemStorageIcon= ResUtil.getDrawable("ic_storage")
                 menu.add(Menu.NONE, 3, Menu.NONE, itemStorage).icon = itemStorageIcon
             }
 
             if (App.getExerciseFeatureUtil().isInstalled())
-                menu.findItem(R.id.navExercises).title = getString(R.string.exercises)
+                menu.findItem(R.id.navExercises).title = getString(R.string.exercise)
             else
                 menu.findItem(R.id.navExercises).title = getString(R.string.exercises_download)
 
@@ -210,27 +231,28 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
 
     private fun initFeatures(){
         if(App.getTutorialFeatureUtil().isInstalled()
-            && Storage.getUninstallTutorial(applicationContext))
+            && Storage.getUninstallTutorial(applicationContext)
+        )
             splitInstallManager.deferredUninstall(
                 arrayListOf(
-                    Features.Tutorial.FEATURE_NAME,
-                    Features.Images.FEATURE_NAME
+                    App.getTutorialFeatureUtil().featureName,
+                    App.getImageFeatureutil().featureName
                 )
             )
     }
 
     private fun showExercisesDownloadingDialog(){
-      dialogDownloading=AlertDialog.newInstance(
+      dialogDownloading= AlertDialog.newInstance(
           AlertDialog.DIALOG_DOWNLOADING,
-            "Pending",
-            "status",
-            null,
+          "Pending",
+          "status",
+          null,
           "hide",
-            "cancel",
+          "cancel",
           null,
           null,
           true
-        )
+      )
         dialogDownloading.isCancelable=false
         dialogDownloading.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOADING.toString())
     }
@@ -244,15 +266,15 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
     private fun showStorageDownloadDialog(){
         dialog= AlertDialog.newInstance(
             AlertDialog.DIALOG_DOWNLOAD_STORAGE,
-          "title",
-          "This feature will allow you to save these exercises in your storage. However, in order to use this feature the app needs to download some files from playstore",
-          null,
+            "title",
+            "This feature will allow you to save these exercises in your storage. However, in order to use this feature the app needs to download some files from playstore",
+            null,
             "yes",
-          "no",
+            "no",
             null,
             R.drawable.ic_download,
             false
-      )
+        )
         dialog.isCancelable=false
         dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString())
     }
@@ -276,7 +298,7 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
     }
 
     private fun showAlertFragment(status: String, progress: Boolean){
-        val statusFragment=AlertFragment.newInstance(status, progress)
+        val statusFragment= AlertFragment.newInstance(status, progress)
         loadFragment(R.id.mainStatusContainer, statusFragment, TAG_STATUS_FRAGMENT)
     }
 
@@ -289,7 +311,7 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
     }
 
     private fun hideAlertFragment(){
-       val alertFragment:AlertFragment?=supportFragmentManager.findFragmentByTag(TAG_STATUS_FRAGMENT) as AlertFragment?
+       val alertFragment: AlertFragment?=supportFragmentManager.findFragmentByTag(TAG_STATUS_FRAGMENT) as AlertFragment?
         removeFragment(alertFragment)
     }
 
@@ -312,7 +334,9 @@ class MainActivity : BaseSplitActivity(),AlertDialog.OnClickListener,MainCallbac
     override fun onDownloadExerciseYes(includeSave: Boolean) {
         dialog.dismiss()
         if(includeSave)
-            viewModel.install(arrayListOf(App.getExerciseFeatureUtil().featureName,App.getStorageFeatureUtil().featureName))
+            viewModel.install(arrayListOf(
+                App.getExerciseFeatureUtil().featureName,
+                App.getStorageFeatureUtil().featureName))
         else
             viewModel.install(arrayListOf(App.getExerciseFeatureUtil().featureName))
         showExercisesDownloadingDialog()

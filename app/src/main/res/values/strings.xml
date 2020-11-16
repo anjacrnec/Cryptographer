@@ -2,7 +2,7 @@
     <string name="app_name">Cryptographer</string>
     <string name="title_tutorial">Tutorial</string>
     <string name="cryptography">Cryptography</string>
-    <string name="exercises">Exercises</string>
+    <string name="exercise">Exercises</string>
     <string name="help">Help</string>
 
     <string name="encrypt">Encrypt</string>
@@ -56,4 +56,9 @@
     <string name="ok">Ok</string>
     <string name="title_images">Images</string>
     <string name="title_exercises_storage">Exercises Storage</string>
+
+    <string name="exercises">Exercises</string>
+    <string name="exercises_storage">Exercises storage</string>
+    <string name="tutorial">Tutorial</string>
+    <string name="images">Images</string>
 </resources>

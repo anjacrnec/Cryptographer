@@ -2,7 +2,7 @@ package com.appbundles.cryptographer
 
 import android.content.Intent
 import android.os.Bundle
-import com.appbundles.cryptographer.features.Features
+import com.appbundles.cryptographer.main.MainActivity
 import com.example.bundles.BaseSplitActivity
 
 class SplashActivity : BaseSplitActivity(){

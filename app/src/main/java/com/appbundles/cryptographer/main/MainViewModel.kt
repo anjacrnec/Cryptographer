@@ -1,14 +1,10 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.main
 
-import android.widget.Toast
-import androidx.fragment.app.Fragment
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
-import com.appbundles.cryptographer.features.Features
+import com.appbundles.cryptographer.App
 import com.appbundles.cryptographer.features.Session
-import com.google.android.play.core.splitinstall.SplitInstallManager
-import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
@@ -22,6 +18,7 @@ class MainViewModel:ViewModel() {
 
     private val status = MutableLiveData<Int>()
     val statusValue: LiveData<Int> = status
+
 
     fun initSplitListener() :SplitInstallStateUpdatedListener {
         var listener = SplitInstallStateUpdatedListener { state ->

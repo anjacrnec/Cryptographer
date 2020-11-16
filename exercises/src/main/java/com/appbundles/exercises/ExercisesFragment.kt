@@ -7,18 +7,16 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
-import com.appbundles.cryptographer.AlertDialog
+import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.App
-import com.appbundles.cryptographer.MainCallback
-import com.appbundles.cryptographer.features.Features
+import com.appbundles.cryptographer.main.MainCallback
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
 import com.google.android.material.snackbar.Snackbar
 import kotlinx.android.synthetic.main.fragment_exercises.*
 
 
-class ExercisesFragment : BaseSplitFragment(),AlertDialog.OnClickListener{
+class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
 
 
     private lateinit var exercise: Exercise

@@ -6,9 +6,8 @@ import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.appbundles.cryptographer.MainActivity
+import com.appbundles.cryptographer.main.MainActivity
 import com.appbundles.cryptographer.Storage
-import com.appbundles.cryptographer.features.Features
 import com.appbundles.images.ImageUtility
 import kotlinx.android.synthetic.main.fragment_tutorial.*
 
@@ -84,7 +83,6 @@ class TutorialFragment : Fragment() {
         val intent = Intent(context, MainActivity::class.java)
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        intent.putExtra(Features.Tutorial.SKIP_TUTORIAL,tutorial_skip_checkbox.isChecked)
         startActivity(intent)
         Storage.setSkipTutorial(activity!!.applicationContext,true)
         activity?.finish()

@@ -1,10 +1,10 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.alerts
 
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.core.content.ContextCompat
+import com.appbundles.cryptographer.R
 import com.example.bundles.BaseSplitFragment
 import kotlinx.android.synthetic.main.fragment_status.*
 

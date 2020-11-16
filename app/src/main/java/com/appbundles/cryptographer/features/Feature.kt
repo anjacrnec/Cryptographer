@@ -7,9 +7,11 @@ import android.content.Context
 import android.content.Intent
 import android.content.res.Resources
 import android.graphics.drawable.Drawable
+import android.util.Log
 import androidx.fragment.app.Fragment
 import com.appbundles.cryptographer.App
 import com.appbundles.cryptographer.BuildConfig
+import com.appbundles.cryptographer.ResUtil
 import java.lang.Exception
 
 open class Feature(
@@ -18,11 +20,19 @@ open class Feature(
     private val featureDirectory:String,
     private val fragmentInfo:List<String>?,
     private val activityInfo:List<String>?,
+    private val isBase:Boolean
 )
 {
 
+    private lateinit var packageName:String
     private val resources=context.resources
-    private val packageName:String = BuildConfig.APPLICATION_ID+"."+ Features.ExercisesStorage.FEATURE_NAME
+    init {
+        if(isBase)
+            packageName=context.packageName
+        else
+            packageName=BuildConfig.APPLICATION_ID+"."+ featureName
+    }
+
 
     @SuppressLint("UseCompatLoadingForDrawables")
     fun getDrawable(name:String):Drawable?{
@@ -89,6 +99,10 @@ open class Feature(
 
     fun isInstalled():Boolean{
         return App.getSplitInstallManager().installedModules.contains(featureName)
+    }
+
+    fun getLocalFeatureName():String?{
+        return ResUtil.getString(featureName)
     }
 
 }

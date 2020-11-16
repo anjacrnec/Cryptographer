@@ -1,4 +1,4 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.cryptographer
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,13 +6,14 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.DiagonalCipher
 import com.appbundles.cryptographer.cryptography.OrthogonalCipher
 import com.appbundles.cryptographer.cryptography.ReverseOrthogonalCipher
 import com.appbundles.cryptographer.cryptography.TranspositionalCipher
 import kotlinx.android.synthetic.main.fragment_transpositional.*
 
-class TranspositionalFragment:CipherFragment() {
+class TranspositionalFragment: CipherFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

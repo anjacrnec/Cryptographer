@@ -1,4 +1,4 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.cryptographer
 
 import android.os.Bundle
 import android.text.Editable
@@ -6,10 +6,11 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.PlayfairCipher
 import kotlinx.android.synthetic.main.fragment_cipher.*
 
-class PlayfairFragment:CipherFragment() {
+class PlayfairFragment: CipherFragment() {
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)

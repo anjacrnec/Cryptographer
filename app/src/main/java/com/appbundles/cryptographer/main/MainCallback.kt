@@ -1,4 +1,4 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.main
 
 import com.appbundles.cryptographer.features.Session
 

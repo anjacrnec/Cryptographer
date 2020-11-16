@@ -1,4 +1,4 @@
-package com.appbundles.cryptographer
+package com.appbundles.cryptographer.alerts
 
 import android.content.Context
 import android.os.Bundle
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.*
 import androidx.constraintlayout.widget.ConstraintLayout
 import androidx.fragment.app.DialogFragment
-
+import com.appbundles.cryptographer.R
 
 
 class AlertDialog():DialogFragment(){
@@ -32,7 +32,7 @@ class AlertDialog():DialogFragment(){
     private lateinit var dialogCheckbox: CheckBox
     private lateinit var dialogIcon: ImageView
     private lateinit var dialogProgress: ProgressBar
-    private var dialogType:Int=R.drawable.ic_placeholder
+    private var dialogType:Int= R.drawable.ic_placeholder
 
     private var onClickListener: OnClickListener? = null
 
@@ -68,9 +68,9 @@ class AlertDialog():DialogFragment(){
         private const val DIALOG_TYPE="type"
         private const val DIALOG_PROGRESS="progress"
 
-        fun newInstance(type:Int):AlertDialog?{
+        fun newInstance(type:Int): AlertDialog?{
             when(type){
-                DIALOG_DOWNLOAD_EXERCISE->
+                DIALOG_DOWNLOAD_EXERCISE ->
                     return  newInstance(
                        DIALOG_DOWNLOAD_EXERCISE,
                         "Title",
@@ -177,18 +177,18 @@ class AlertDialog():DialogFragment(){
 
         when(dialogType){
 
-            DIALOG_DOWNLOAD_STORAGE->{
+            DIALOG_DOWNLOAD_STORAGE ->{
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadStorageYes() }
                 dialogOptionTwo.setOnClickListener { onClickListener?.onDownloadStorageNo() }
             }
 
-            DIALOG_DOWNLOAD_EXERCISE->{
+            DIALOG_DOWNLOAD_EXERCISE ->{
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadExerciseYes(dialogCheckbox.isChecked) }
                 dialogOptionTwo.setOnClickListener { onClickListener?.onDownloadExercisesNo() }
                 dialogOptionThree.setOnClickListener { onClickListener?.onDownloadExerciseNever() }
             }
 
-            DIALOG_DOWNLOADING->{
+            DIALOG_DOWNLOADING ->{
                 dialogOptionOne.setOnClickListener { onClickListener?.onDownloadingHide() }
                 dialogOptionTwo.setOnClickListener {  onClickListener?.onDownloadingCancel()}
                 dialogOptionThree.setOnClickListener { onClickListener?.onDownloadingFinish() }
