@@ -380,10 +380,12 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         dialogDownloading.dismiss()
     }
 
-    override fun getCurrentSession():Session{
-        return session
+    override fun isAlertFragmentVisible(): Boolean {
+      if(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString())==null)
+          return false
+        else
+          return true
     }
-
     override fun showDialog() {
         showStorageDownloadDialog()
     }

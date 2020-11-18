@@ -5,7 +5,9 @@ import com.appbundles.cryptographer.features.Session
 
 interface MainCallback {
 
+    fun isAlertFragmentVisible():Boolean
+
     fun showDialog()
 
-    fun getCurrentSession(): Session
+
 }

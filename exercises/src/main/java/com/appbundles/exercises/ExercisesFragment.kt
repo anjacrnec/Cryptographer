@@ -63,7 +63,7 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
             if(App.getStorageFeatureUtil().isInstalled()){
 
             } else {
-                if(mainCallback.getCurrentSession().type!=App.getStorageFeatureUtil().featureName)
+                if(!mainCallback.isAlertFragmentVisible())
                     mainCallback.showDialog()
                 else
                     Snackbar.make(exSaveBtn,"This module is already being downloaded",Snackbar.LENGTH_SHORT).show()
