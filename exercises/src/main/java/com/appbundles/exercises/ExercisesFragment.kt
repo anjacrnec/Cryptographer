@@ -9,6 +9,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.App
+import com.appbundles.cryptographer.StorageInterface
 import com.appbundles.cryptographer.main.MainCallback
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
@@ -61,7 +62,9 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
 
         exSaveBtn.setOnClickListener{
             if(App.getStorageFeatureUtil().isInstalled()){
-
+                val storageProvider =
+                    Class.forName("com.appbundles.exercises_storage.StorageImplementation\$Provider").kotlin.objectInstance as StorageInterface.Provider
+                    storageProvider.get().insertExercise()
             } else {
                 if(!mainCallback.isAlertFragmentVisible())
                     mainCallback.showDialog()

@@ -1,11 +1,14 @@
 package com.appbundles.exercises_storage
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.example.bundles.BaseSplitFragment
+import kotlinx.android.synthetic.main.fragment_saved_exercises.*
 
 // TODO: Rename parameter arguments, choose names that match
 // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
@@ -28,6 +31,29 @@ class SavedExercises : BaseSplitFragment() {
             param1 = it.getString(ARG_PARAM1)
             param2 = it.getString(ARG_PARAM2)
         }
+    }
+
+    override fun onActivityCreated(savedInstanceState: Bundle?) {
+        super.onActivityCreated(savedInstanceState)
+        StoredExerciseDatabase.getDatabaseInstance(activity!!.applicationContext)
+
+        btnAdd.setOnClickListener {
+            insert()
+        }
+
+        btnShow.setOnClickListener {
+            val rep=StoredExerciseRepository( (StoredExerciseDatabase.getDatabaseInstance(activity!!.applicationContext)).storedExerciseDao())
+           rep.getListWords()
+            var string=""
+            for(ex in rep.getListWords()!!)
+                string=string+ex.title+" "+ex.body+" "+ex.title
+            Log.e("STORED_",string);
+        }
+    }
+
+     fun insert(){
+        val rep=StoredExerciseRepository( (StoredExerciseDatabase.getDatabaseInstance(activity!!.applicationContext)).storedExerciseDao())
+        rep.insert(StoredExercise("asdra","body","answer"))
     }
 
     override fun onCreateView(
