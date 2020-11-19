@@ -7,9 +7,9 @@ import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.App
-import com.appbundles.cryptographer.StorageInterface
+import com.appbundles.cryptographer.ResUtil
+import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.main.MainCallback
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
@@ -60,19 +60,19 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
         }
 
 
-        exSaveBtn.setOnClickListener{
-            if(App.getStorageFeatureUtil().isInstalled()){
-                val storageProvider =
-                    Class.forName("com.appbundles.exercises_storage.StorageImplementation\$Provider").kotlin.objectInstance as StorageInterface.Provider
-                    storageProvider.get().insertExercise()
+        exSaveBtn.setOnClickListener {
+            if (App.getStorageFeatureUtil().isInstalled()) {
+                saveExercise()
             } else {
-                if(!mainCallback.isAlertFragmentVisible())
+                if (!mainCallback.isAlertFragmentVisible())
                     mainCallback.showDialog()
                 else
-                    Snackbar.make(exSaveBtn,"This module is already being downloaded",Snackbar.LENGTH_SHORT).show()
+                    Snackbar.make(
+                        exSaveBtn,
+                        "This module is already being downloaded",
+                        Snackbar.LENGTH_SHORT
+                    ).show()
             }
-
-
         }
 
     }
@@ -89,7 +89,7 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
                 Exercise.DIAGONAL to exChipDiagonal.isChecked
             )
         )
-        exercise= Exercise.generateExercise(method,context!!)
+        exercise= Exercise.generateExercise(method, context!!)
     }
 
     private fun showExerciseAnswer(){
@@ -109,6 +109,14 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
         exBody.text=exercise.body
         exAnswer.setText("")
         exAnswer.setCompoundDrawablesWithIntrinsicBounds(0, 0, 0, 0)
+    }
+
+    private fun saveExercise(){
+        val storageProvider =
+            Class.forName("com.appbundles.exercises_storage.StorageImplementation\$Provider").kotlin.objectInstance as StorageInterface.Provider
+        storageProvider.get().saveExercise(exercise)
+        Snackbar.make(exSaveBtn, ResUtil.getString(requireContext(),R.string.exercise_is_saved), Snackbar.LENGTH_SHORT)
+            .setAction(ResUtil.getString(requireContext(),R.string.ok), View.OnClickListener { }).show()
     }
 
     private fun enableNextExercise(){
@@ -140,9 +148,15 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
                 } else if (!s.toString().isEmpty()) {
                     exAnswerLayout.isErrorEnabled = true
                     exAnswerLayout.error = resources.getString(R.string.wrong_answer)
-                    exAnswer.setCompoundDrawablesWithIntrinsicBounds(0, 0, com.appbundles.cryptographer.R.drawable.ic_error, 0)
+                    exAnswer.setCompoundDrawablesWithIntrinsicBounds(
+                        0,
+                        0,
+                        com.appbundles.cryptographer.R.drawable.ic_error,
+                        0
+                    )
                 }
             }
+
             override fun afterTextChanged(s: Editable?) {}
         })
     }

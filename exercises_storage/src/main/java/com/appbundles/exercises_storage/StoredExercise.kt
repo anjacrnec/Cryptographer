@@ -14,4 +14,5 @@ class StoredExercise (
     @PrimaryKey(autoGenerate = true)
     var foodId: Int = 0
 
+
 }

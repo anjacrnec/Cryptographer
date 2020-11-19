@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="10dp"
+    android:layout_marginStart="10dp"
+    android:layout_marginEnd="10dp"
+    >
+
+    <net.cachapa.expandablelayout.ExpandableLayout
+        android:id="@+id/layoutAnswerExpandible2"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="#FFFFFF"
+        app:el_duration="500"
+        app:el_expanded="true">
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/itemExerciseTitle"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:padding="10dp"
+                android:textAllCaps="true"
+                android:textColor="@color/color_accent"
+                android:textSize="18dp"
+                style="@style/CryptographerTitles"
+                android:textAlignment="textStart"
+                android:gravity="start"
+                tools:text="Title"
+                />
+
+            <TextView
+                android:id="@+id/txtTitleCode"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:visibility="gone"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:id="@+id/itemExerciseBody"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:padding="10dp"
+            android:textSize="15sp"
+            android:text="Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo consequat." />
+
+        <TextView
+            android:id="@+id/txtBodyCode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="gone"/>
+
+            <TextView
+                android:id="@+id/itemExerciseAnswer"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/color_accent"
+                android:padding="10dp"
+                tools:text="Answer" />
+
+    </LinearLayout>
+    </net.cachapa.expandablelayout.ExpandableLayout>
+</androidx.cardview.widget.CardView>

@@ -7,29 +7,22 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.example.bundles.BaseSplitFragment
 import kotlinx.android.synthetic.main.fragment_saved_exercises.*
 
-// TODO: Rename parameter arguments, choose names that match
-// the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-private const val ARG_PARAM1 = "param1"
-private const val ARG_PARAM2 = "param2"
 
-/**
- * A simple [Fragment] subclass.
- * Use the [SavedExercises.newInstance] factory method to
- * create an instance of this fragment.
- */
 class SavedExercises : BaseSplitFragment() {
-    // TODO: Rename and change types of parameters
-    private var param1: String? = null
-    private var param2: String? = null
 
+    var listStoredExercises:List<StoredExercise>?=null
+    private lateinit var adapter:StoredExercisesAdapter
+    private lateinit var storageViewModel: StorageViewModel
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-            param1 = it.getString(ARG_PARAM1)
-            param2 = it.getString(ARG_PARAM2)
+
         }
     }
 
@@ -37,18 +30,24 @@ class SavedExercises : BaseSplitFragment() {
         super.onActivityCreated(savedInstanceState)
         StoredExerciseDatabase.getDatabaseInstance(activity!!.applicationContext)
 
-        btnAdd.setOnClickListener {
-            insert()
+        storageViewModel = ViewModelProviders.of(this).get(StorageViewModel::class.java)
+        storageViewModel.getStoredExercises().observe(viewLifecycleOwner, Observer { list ->
+            adapter= StoredExercisesAdapter(list)
+            recyclerStoredExercises.adapter = adapter
+            recyclerStoredExercises.layoutManager = LinearLayoutManager(activity)
+            adapter.notifyDataSetChanged()
+        })
+
+
+        val rep=StoredExerciseRepository( (StoredExerciseDatabase.getDatabaseInstance(activity!!.applicationContext)).storedExerciseDao())
+        listStoredExercises= rep.getListWords()
+        if(listStoredExercises!=null) {
+            adapter = StoredExercisesAdapter(listStoredExercises!!)
+            recyclerStoredExercises.adapter = adapter
+            recyclerStoredExercises.layoutManager = LinearLayoutManager(activity)
         }
 
-        btnShow.setOnClickListener {
-            val rep=StoredExerciseRepository( (StoredExerciseDatabase.getDatabaseInstance(activity!!.applicationContext)).storedExerciseDao())
-           rep.getListWords()
-            var string=""
-            for(ex in rep.getListWords()!!)
-                string=string+ex.title+" "+ex.body+" "+ex.title
-            Log.e("STORED_",string);
-        }
+
     }
 
      fun insert(){
@@ -60,26 +59,15 @@ class SavedExercises : BaseSplitFragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        // Inflate the layout for this fragment
         return inflater.inflate(R.layout.fragment_saved_exercises, container, false)
     }
 
     companion object {
-        /**
-         * Use this factory method to create a new instance of
-         * this fragment using the provided parameters.
-         *
-         * @param param1 Parameter 1.
-         * @param param2 Parameter 2.
-         * @return A new instance of fragment SavedExercises.
-         */
-        // TODO: Rename and change types and number of parameters
         @JvmStatic
         fun newInstance(param1: String, param2: String) =
             SavedExercises().apply {
                 arguments = Bundle().apply {
-                    putString(ARG_PARAM1, param1)
-                    putString(ARG_PARAM2, param2)
+
                 }
             }
     }

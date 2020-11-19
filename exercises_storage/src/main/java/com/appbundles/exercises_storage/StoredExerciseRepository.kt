@@ -1,6 +1,7 @@
 package com.appbundles.exercises_storage
 
 import android.os.AsyncTask
+import androidx.lifecycle.LiveData
 import java.util.concurrent.ExecutionException
 
 class StoredExerciseRepository(private val storedExerciseDao: StoredExerciseDao) {
@@ -14,6 +15,20 @@ class StoredExerciseRepository(private val storedExerciseDao: StoredExerciseDao)
         return GetListWordsASyncTask(storedExerciseDao).execute().get()
     }
 
+    fun getLive(): LiveData<List<StoredExercise>> {
+        return GetLiveListWordsASyncTask(storedExerciseDao).execute().get()
+    }
+
+
+    class GetLiveListWordsASyncTask(storedExerciseDao: StoredExerciseDao) :
+        AsyncTask<Void?, Void?, LiveData<List<StoredExercise>>>() {
+        private val storedExerciseDao=storedExerciseDao
+
+        override fun doInBackground(vararg params: Void?): LiveData<List<StoredExercise>> {
+            return  storedExerciseDao.getAllLiveStored()
+        }
+
+    }
 
     class GetListWordsASyncTask(storedExerciseDao: StoredExerciseDao) :
         AsyncTask<Void?, Void?, List<StoredExercise>>() {

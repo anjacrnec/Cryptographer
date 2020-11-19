@@ -2,8 +2,10 @@ package com.example.bundles
 
 import android.content.Context
 import android.os.Bundle
+import android.view.View
 import androidx.appcompat.app.AppCompatActivity
 import androidx.fragment.app.Fragment
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.splitcompat.SplitCompat
 
 
@@ -21,7 +23,7 @@ abstract class BaseSplitActivity : AppCompatActivity() {
 
 
 
-    fun findFragmentByTag(tag:String):Fragment?{
+    fun findFragmentByTag(tag: String):Fragment?{
         return supportFragmentManager.findFragmentByTag(tag)
     }
 
@@ -39,12 +41,12 @@ abstract class BaseSplitActivity : AppCompatActivity() {
         }
     }
 
-    fun loadFragment(container: Int, fragment: Fragment, tag:String){
-        supportFragmentManager.beginTransaction().add(container, fragment,tag).commit()
+    fun loadFragment(container: Int, fragment: Fragment, tag: String){
+        supportFragmentManager.beginTransaction().add(container, fragment, tag).commit()
     }
 
-    fun loadHiddenFragment(container: Int, fragment: Fragment, tag:String){
-        supportFragmentManager.beginTransaction().add(container, fragment,tag).hide(fragment).commit()
+    fun loadHiddenFragment(container: Int, fragment: Fragment, tag: String){
+        supportFragmentManager.beginTransaction().add(container, fragment, tag).hide(fragment).commit()
     }
 
     fun removeFragment(fragment: Fragment?){
@@ -52,6 +54,8 @@ abstract class BaseSplitActivity : AppCompatActivity() {
             supportFragmentManager.beginTransaction().remove(fragment).commit()
         }
     }
+
+
 
 
 

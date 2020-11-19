@@ -28,6 +28,8 @@
 
     <string name="correct_answer">Correct answer</string>
     <string name="wrong_answer">Wrong answer</string>
+    <string name="exercise_is_saved">Successfully saved exercise!</string>
+    <string name="ok">Ok</string>
 
     <style name="Hint2">
         <item name="android:textColor">@color/color_primary_medium</item>
