@@ -1,0 +1,57 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">Cryptographer</string>
+    <string name="title_tutorial">Туторијал</string>
+    <string name="cryptography">Криптографија</string>
+    <string name="exercise">Задачи</string>
+    <string name="help">Помош</string>
+
+    <string name="encrypt">[Е]</string>
+    <string name="decrypt">[Д]</string>
+    <string name="clear">Бриши</string>
+    <string name="plain_text"> Отворен текст </string>
+    <string name="cipher_text"> Шифрат</string>
+    <string name="key"> Клуч </string>
+    <string name="input">Влез </string>
+    <string name="output">Излез</string>
+
+
+    <string name="caeser_encryption">Цезарова шифра</string>
+    <string name="caeser_helper_key">Клучот мора да има вредност меѓу 1 и 25</string>
+
+
+    <string name="affine_cipher">Афина шифра</string>
+    <string name="keyA"> Key A</string>
+    <string name="keyB"> Key B</string>
+    <string name="affine_helper_key">Клучот мора да биди инверзен во однос на 26</string>
+
+    <string name="vignere_cipher">вижнерова шифра</string>
+    <string name="playfair_cipher">плејфер шифра</string>
+
+
+    <string name="transpositional_cipher">транспозициска шифра</string>
+    <string name="transpositional_orthogonal">Ортогално</string>
+    <string name="transpositional_orthogonal_boustrophedon">Бустрафедон ортогонално </string>
+    <string name="transpositional_orthogonal_boustrophedon2">Бустрафедон \n ортогонално </string>
+    <string name="transpositional_diagonal">Диагонално</string>
+    <string name="transpositional_helper_key">Клучот мора да се состој од барем 2 броја.\n Кога се сортира клучот мора да се состој од серија на инкрементални вредности.</string>
+    <string name="transpositional_helper_key2">Клучот мора да се состој од барем 2 броја.\n Кога се сортира клучот мора да се состој од серија на инкрементални вредности.</string>
+    <string name="transpositional_diagonal_key">Kлучот мора да е пократок од внесот. </string>
+    <string name="trans_ortho_boustrophedon_cipher"></string>
+    <string name="trans_ortho_cipher">трнаспозисика ортогонална шиифра</string>
+    <string name="trans_diagonal_cipher">транспозициска дијагонална шифра</string>
+    <string name="trans_method">Метод:</string>
+
+    <string name="title_exercises">Задачи</string>
+    <string name="exercises_download">Спушти задачи</string>
+
+
+    <string name="status_downloading">Спуштање</string>
+    <string name="status_pending">Лоадирање</string>
+    <string name="status_installing">Инсталација</string>
+    <string name="status_installed">Инсталиран</string>
+    <string name="status_canceled">Прекини</string>
+    <string name="status_error">Грешка</string>
+
+    <string name="ok">ОК</string>
+</resources>

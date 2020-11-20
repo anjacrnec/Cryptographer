@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="next">Следно</string>
+    <string name="previous">Претходно</string>
+    <string name="skip_tutorial">Прескокни туторијал</string>
+    <string name="tutorial">Туторијал</string>
+    <string name="tutorial_instructions">Чекори за како да се користи аппликацијата</string>
+    <string name="dont_show_message">Не ми го покажувај ова повеќе</string>
+</resources>

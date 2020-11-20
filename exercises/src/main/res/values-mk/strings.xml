@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="cipher_colon">Шифрат : </string>
+    <string name="plain_text_colon"> Отворен текст : </string>
+    <string name="cipher_text_colon"> Затворен текст:</string>
+    <string name="key_colon"> Клуч :</string>
+    <string name="new_exercise">Следна </string>
+    <string name="pt">отворениот текст</string>
+    <string name="ct">затворениот текст</string>
+    <string name="ek">енкриптираш</string>
+    <string name="dk">декриптираш</string>
+    <string name="answer">Одговор</string>
+    <string name="exercise_body">Искористи  %1$s за до го %2$s  %3$s %4$s со клучот %5$s</string>
+    <string name="exercise">Задача</string>
+
+    <string name="configure_exercise">Конфигурирај опции за генерирање на задачи</string>
+    <string name="generate_answer">Генерирај одговор</string>
+
+    <string name="caeser">Цезар</string>
+    <string name="affine">Афина</string>
+    <string name="vigenere">Вижнерова</string>
+    <string name="playfair">Плејфер</string>
+    <string name="ortho">Ортогонална</string>
+    <string name="reverse">Бустрафедон ортогонална</string>
+    <string name="diagonal">Дијагонална</string>
+    <string name="ciphers_disabled">барем еден шифрат треба да биди активен за да се генерира задача</string>
+
+    <string name="correct_answer">Точен одговор</string>
+    <string name="wrong_answer">Грешен одговор</string>
+    <string name="exercise_is_saved">Успешнп зачувана задача!</string>
+    <string name="ok">Ok</string>
+
+
+
+</resources>

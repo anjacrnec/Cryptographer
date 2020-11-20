@@ -16,7 +16,7 @@ import java.lang.Exception
 
 open class Feature(
     private val context: Context,
-    val featureName:String,
+    open val featureName:String,
     private val featureDirectory:String,
     private val fragmentInfo:List<String>?,
     private val activityInfo:List<String>?,
