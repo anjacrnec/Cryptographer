@@ -249,8 +249,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         )
             splitInstallManager.deferredUninstall(
                 arrayListOf(
-                    App.getTutorialFeatureUtil().featureName,
-                    App.getImageFeatureutil().featureName
+                    App.getTutorialFeatureUtil().featureName
                 )
             )
     }

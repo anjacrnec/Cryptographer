@@ -15,7 +15,7 @@ android {
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
-    dynamicFeatures = [':tutorial', ':exercises', ':images', ':exercises_storage']
+    dynamicFeatures = [':tutorial', ':exercises', ':exercises_storage']
 
     bundle {
         density {

@@ -1,5 +1,4 @@
 include ':exercises_storage'
-include ':images'
 include ':exercises'
 include ':tutorial'
 include ':app'

@@ -24,15 +24,6 @@ class App:SplitCompatApplication() {
             true
         )
 
-        imageFeatureUtil=Feature(
-            this,
-            "images",
-            "com.appbundles.images.",
-            null,
-            null,
-            false
-        )
-
         tutorialFeatureUtil= Feature(
             this,
             "tutorial",
@@ -68,7 +59,6 @@ class App:SplitCompatApplication() {
         private lateinit var splitInstallManager:SplitInstallManager
         private lateinit var allFeaturesUtil:List<Feature>
         private lateinit var mainModule:Feature
-        private lateinit var imageFeatureUtil:Feature
         private lateinit var tutorialFeatureUtil:Feature
         private lateinit var exerciseFeatureUtil:Feature
         private lateinit var storageFeatureUtil:Feature
@@ -96,9 +86,6 @@ class App:SplitCompatApplication() {
             return tutorialFeatureUtil
         }
 
-        fun getImageFeatureutil():Feature{
-            return imageFeatureUtil
-        }
     }
 
 }
