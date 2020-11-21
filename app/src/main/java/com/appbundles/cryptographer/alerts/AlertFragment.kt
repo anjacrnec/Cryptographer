@@ -13,11 +13,12 @@ class AlertFragment:BaseSplitFragment() {
     var STATUS_TITLE="title"
     var STATUS_ICON="icon"
     var STATUS_PROGESS="progress"
+    var STATUS_BODY="body"
 
     private var title: String? = null
     private var icon: Int? = null
     private var progress: Boolean? = null
-
+    private var body: String? = null
 
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
@@ -29,6 +30,7 @@ class AlertFragment:BaseSplitFragment() {
         arguments?.let {
            title = it.getString(STATUS_TITLE)
             progress=it.getBoolean(STATUS_PROGESS)
+            body=it.getString(STATUS_BODY)
         }
     }
 
@@ -43,6 +45,8 @@ class AlertFragment:BaseSplitFragment() {
 
     private fun updateStatus()
     {
+        if(body!=null)
+            status_desc.text=body
         status_title.text=title
         if(icon==null)
             status_icon.visibility=View.GONE
@@ -50,8 +54,11 @@ class AlertFragment:BaseSplitFragment() {
             status_progress.visibility=View.VISIBLE
     }
 
-    fun updateStatus(title:String, icon:Int?, progress:Boolean ){
-        status_title.text=title
+    fun updateStatus(title:String?, body:String?, icon:Int?, progress:Boolean ){
+        if(title!=null)
+            status_title.text=title
+        if(body!=null)
+            status_desc.text=body
         if(icon==null)
             status_icon.visibility=View.GONE
         else {
@@ -66,10 +73,11 @@ class AlertFragment:BaseSplitFragment() {
 
     companion object {
         @JvmStatic
-        fun newInstance(status: String, progress:Boolean) =
+        fun newInstance(status: String?, body:String?,progress:Boolean) =
             AlertFragment().apply {
                 arguments = Bundle().apply {
                     putString(STATUS_TITLE, status)
+                    putString(STATUS_BODY, body)
                     putBoolean(STATUS_PROGESS, progress)
                 }
             }

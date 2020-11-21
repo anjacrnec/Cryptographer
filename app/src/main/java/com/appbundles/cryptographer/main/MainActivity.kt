@@ -31,8 +31,6 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     private var storageFragment:Fragment?=null
     private lateinit var splitInstallManager:SplitInstallManager
     private lateinit var listener: SplitInstallStateUpdatedListener
-    private lateinit var dialog: AlertDialog
-    private lateinit var dialogDownloading: AlertDialog
     private lateinit var viewModel: MainViewModel
     val TAG_CRYPTOGRAPHER_FRAGMENT = "cryptographer"
     val TAG_EXERCISES_FRAGMENT = "exercises"
@@ -77,6 +75,8 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                     && !Storage.getUninstallTutorial(applicationContext)
                 )
                     navigateToTutorial()
+                else
+                    showTutorialDownloadDialog()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -89,60 +89,74 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
            this.session=session
         })
 
-        Log.e("TEST_",App.getExerciseFeatureUtil().getLocalFeatureName().toString())
-        viewModel.statusValue.observe(this, Observer { status ->
+
+        viewModel.stateValue.observe(this, Observer { state ->
             val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?
             val alertFragment: AlertFragment? = findFragmentByTag(TAG_STATUS_FRAGMENT) as AlertFragment?
-            when (status) {
+            var featuresDownloading=""
+
+            for(featureName in state.moduleNames()){
+                for(feature in App.getAllFeaturesUtil())
+                    if(featureName==feature.featureName){
+                        if(dialogDownloading==null || state.moduleNames().size==1)
+                            featuresDownloading=featuresDownloading+feature.getLocalFeatureName()+" "
+                        else {
+                            featuresDownloading = featuresDownloading + feature.getLocalFeatureName()+"\n"
+                        }
+                        break
+                    }
+            }
+
+            when (state.status()) {
                 SplitInstallSessionStatus.PENDING -> {
                     dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_pending))
-                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_pending), null, true)
+                    dialogDownloading?.setBody(featuresDownloading)
+                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_pending),featuresDownloading, null, true)
                 }
 
                 SplitInstallSessionStatus.DOWNLOADING -> {
-                    dialogDownloading?.setTitle(
-                        ResUtil.getString(
-                            this,
-                            R.string.status_downloading
-                        )
-                    )
+                    dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_downloading))
+                    dialogDownloading?.setBody(featuresDownloading)
                     alertFragment?.updateStatus(
-                        ResUtil.getString(
-                            this,
-                            R.string.status_downloading
-                        ), null, true)
+                        ResUtil.getString(this, R.string.status_downloading),featuresDownloading, null, true)
                 }
 
-                SplitInstallSessionStatus.INSTALLING -> { dialogDownloading?.setTitle(
-                    ResUtil.getString(
-                        this,
-                        R.string.status_installing
-                    )
-                )
-                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_installing), null, true)
+                SplitInstallSessionStatus.INSTALLING -> {
+                    dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_installing))
+                    dialogDownloading?.setBody(featuresDownloading)
+                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_installing),featuresDownloading, null, true)
                 }
 
                 SplitInstallSessionStatus.INSTALLED -> {
                     dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_installed))
+                    dialogDownloading?.setBody(featuresDownloading)
                     dialogDownloading?.setIcon(R.drawable.ic_done)
                     dialogDownloading?.setOptionOne(null)
                     dialogDownloading?.setOptionTwo(null)
                     dialogDownloading?.setOptionThree(ResUtil.getString(this, R.string.ok))
                     alertFragment?.updateStatus(
-                        ResUtil.getString(this, R.string.status_installed),
+                        ResUtil.getString(this, R.string.status_installed),featuresDownloading,
                         R.drawable.ic_done, false)
                     hideAlertFragment(true)
 
-                    if (session.type== App.getExerciseFeatureUtil().featureName) {
+                    if (state.moduleNames().contains(App.getExerciseFeatureUtil().featureName) &&
+                            !state.moduleNames().contains(App.getStorageFeatureUtil().featureName)) {
+
                         exercisesFragment = FragmentUtil.ExercisesFragment()
                         if(mainBottomNavigation.menu.findItem(R.id.navExercises).isChecked)
                             loadFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
                         else
                             loadHiddenFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
-                    } else if (session.type== App.getStorageFeatureUtil().featureName) {
+
+                    } else if (state.moduleNames().contains(App.getStorageFeatureUtil().featureName) &&
+                        !state.moduleNames().contains(App.getExerciseFeatureUtil().featureName)) {
+
                         storageFragment = FragmentUtil.StorageFragment()
                         loadHiddenFragment(R.id.main_fragment_container, storageFragment!!, TAG_STORAGE_FRAGMENT)
-                    } else{
+
+                    } else if (state.moduleNames().contains(App.getStorageFeatureUtil().featureName) &&
+                        state.moduleNames().contains(App.getExerciseFeatureUtil().featureName)){
+
                         exercisesFragment = FragmentUtil.ExercisesFragment()
                         loadHiddenFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
                         storageFragment = FragmentUtil.StorageFragment()
@@ -160,7 +174,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                     dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
                     dialogDownloading?.setIcon(R.drawable.ic_error)
                     alertFragment?.updateStatus(
-                        ResUtil.getString(this, R.string.status_error),
+                        ResUtil.getString(this, R.string.status_error),featuresDownloading,
                         R.drawable.ic_error, true)
                 }
             }
@@ -241,42 +255,9 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
             )
     }
 
-    private fun showExercisesDownloadingDialog(){
-      dialogDownloading= AlertDialog.newInstance(
-          AlertDialog.DIALOG_DOWNLOADING,
-          "Pending",
-          "status",
-          null,
-          "hide",
-          "cancel",
-          null,
-          null,
-          true
-      )
-        dialogDownloading.isCancelable=false
-        dialogDownloading.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOADING.toString())
-    }
-
-    private fun showExercisesDownloadDialog() {
-        dialog= AlertDialog.newInstance(AlertDialog.DIALOG_DOWNLOAD_EXERCISE)!!
-        dialog.isCancelable=false
-        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString())
-    }
-
-    private fun showStorageDownloadDialog(){
-        dialog= AlertDialog.newInstance(
-            AlertDialog.DIALOG_DOWNLOAD_STORAGE,
-            "title",
-            "This feature will allow you to save these exercises in your storage. However, in order to use this feature the app needs to download some files from playstore",
-            null,
-            "yes",
-            "no",
-            null,
-            R.drawable.ic_download,
-            false
-        )
-        dialog.isCancelable=false
-        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString())
+    private fun navigateToTutorial(){
+        val intent = ActivityUtil.TutorialActivity(this)
+        startActivity(intent)
     }
 
     private fun navigateToExercisesFragment(){
@@ -297,8 +278,73 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         showFragment(storageFragment)
     }
 
-    private fun showAlertFragment(status: String, progress: Boolean){
-        val statusFragment= AlertFragment.newInstance(status, progress)
+
+    private fun showExercisesDownloadingDialog(){
+      val dialogDownloading= AlertDialog.newInstance(
+          AlertDialog.DIALOG_DOWNLOADING,
+          ResUtil.getString(this,R.string.status_pending),
+          "",
+          null,
+          ResUtil.getString(this,R.string.hide),
+          ResUtil.getString(this,R.string.cancel),
+          null,
+          null,
+          true
+      )
+        dialogDownloading.isCancelable=false
+        dialogDownloading.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOADING.toString())
+    }
+
+    private fun showExercisesDownloadDialog() {
+        val dialog= AlertDialog.newInstance(
+            AlertDialog.DIALOG_DOWNLOAD_EXERCISE,
+            ResUtil.getString(this,R.string.download_feature),
+            ResUtil.getString(this,R.string.download_exercises_desc),
+            ResUtil.getString(this,R.string.download_include_storage),
+            ResUtil.getString(this,R.string.yes),
+            ResUtil.getString(this,R.string.no),
+            null,
+            R.drawable.ic_download,
+            false
+        )
+        dialog.isCancelable=false
+        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString())
+    }
+
+    private fun showStorageDownloadDialog(){
+        val dialog= AlertDialog.newInstance(
+            AlertDialog.DIALOG_DOWNLOAD_STORAGE,
+            ResUtil.getString(this,R.string.download_feature),
+            ResUtil.getString(this,R.string.download_storage_desc),
+            null,
+            ResUtil.getString(this,R.string.yes),
+            ResUtil.getString(this,R.string.no),
+            null,
+            R.drawable.ic_download,
+            false
+        )
+        dialog.isCancelable=false
+        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString())
+    }
+
+    private fun showTutorialDownloadDialog(){
+        val dialog= AlertDialog.newInstance(
+            AlertDialog.DIALOG_DOWNLOAD_TUTORIAL,
+            ResUtil.getString(this,R.string.download_feature),
+            ResUtil.getString(this,R.string.download_tutorial_desc) ,
+            null,
+            ResUtil.getString(this,R.string.yes),
+            ResUtil.getString(this,R.string.no),
+            null,
+            R.drawable.ic_download,
+            false
+        )
+        dialog.isCancelable=false
+        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_TUTORIAL.toString())
+    }
+
+    private fun showAlertFragment(status: String?, body:String?,progress: Boolean){
+        val statusFragment= AlertFragment.newInstance(status, body,progress)
         loadFragment(R.id.mainStatusContainer, statusFragment, TAG_STATUS_FRAGMENT)
     }
 
@@ -315,11 +361,6 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         removeFragment(alertFragment)
     }
 
-    private fun navigateToTutorial(){
-        val intent = ActivityUtil.TutorialActivity(this)
-        startActivity(intent)
-    }
-
     private fun hideBottomNavigation(){
         mainBottomNavigation.visibility=View.GONE
     }
@@ -328,11 +369,13 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     //download exercises dialog callbacks
     override fun onDownloadExercisesNo() {
         mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        dialog.dismiss()
+        val dialog:AlertDialog?=findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString()) as AlertDialog
+        dialog?.dismiss()
     }
 
     override fun onDownloadExerciseYes(includeSave: Boolean) {
-        dialog.dismiss()
+        val dialog:AlertDialog?=findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString()) as AlertDialog
+        dialog?.dismiss()
         if(includeSave)
             viewModel.install(arrayListOf(
                 App.getExerciseFeatureUtil().featureName,
@@ -341,50 +384,54 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
             viewModel.install(arrayListOf(App.getExerciseFeatureUtil().featureName))
         showExercisesDownloadingDialog()
     }
-    override fun onDownloadExerciseNever() {
-        mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        Storage.setExercisesStatus(this, -1)
-        hideBottomNavigation()
-        dialog.dismiss()
-    }
-
 
     //download storage dialog callbacks
     override fun onDownloadStorageNo() {
-        dialog.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString()) as AlertDialog?)?.dismiss()
     }
 
     override fun onDownloadStorageYes() {
-        dialog.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString()) as AlertDialog?)?.dismiss()
         viewModel.install(arrayListOf(App.getStorageFeatureUtil().featureName))
         showExercisesDownloadingDialog()
     }
 
+
+    //download tutorial callbacks
+    override fun onDownloadTutorialNo() {
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_TUTORIAL.toString()) as AlertDialog?)?.dismiss()
+    }
+
+    override fun onDownloadTutorialYes() {
+
+    }
 
     //downloading dialog callbacks
     override fun onDownloadingCancel() {
         if(!App.getExerciseFeatureUtil().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
         session?.let { splitInstallManager.cancelInstall(session.id) }
-        dialogDownloading.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)?.dismiss()
     }
 
     override fun onDownloadingHide() {
         if(!App.getExerciseFeatureUtil().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        dialogDownloading.dismiss()
-        showAlertFragment("status", true)
+        val dialog=(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)
+        val body= dialog?.getBody()
+        val title=dialog?.getTitle()
+        dialog?.dismiss()
+        showAlertFragment(title,body,true)
     }
 
     override fun onDownloadingFinish() {
-        dialogDownloading.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)?.dismiss()
     }
 
+
+
     override fun isAlertFragmentVisible(): Boolean {
-      if(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString())==null)
-          return false
-        else
-          return true
+        return findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) != null
     }
     override fun showDialog() {
         showStorageDownloadDialog()

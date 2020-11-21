@@ -48,6 +48,7 @@
             tools:text="Downloading"
             />
 
+
             <TextView
                 android:id="@+id/status_desc"
                 android:layout_gravity="center_vertical"

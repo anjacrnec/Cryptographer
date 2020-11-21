@@ -67,11 +67,10 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
                 if (!mainCallback.isAlertFragmentVisible())
                     mainCallback.showDialog()
                 else
-                    Snackbar.make(
-                        exSaveBtn,
-                        "This module is already being downloaded",
-                        Snackbar.LENGTH_SHORT
-                    ).show()
+                    Snackbar.make(exSaveBtn, ResUtil.getString(
+                        requireContext(),
+                        com.appbundles.cryptographer.R.string.downloading_already),
+                        Snackbar.LENGTH_SHORT).show()
             }
         }
 

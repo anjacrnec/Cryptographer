@@ -60,5 +60,15 @@
     <string name="exercises">Exercises</string>
     <string name="exercises_storage">Exercises storage</string>
     <string name="tutorial">Tutorial</string>
-    <string name="images">Images</string>
+    <string name="images" translatable="false">Images</string>
+    <string name="hide">hide</string>
+    <string name="cancel">cancel</string>
+    <string name="yes">yes</string>
+    <string name="no">no</string>
+    <string name="download_feature">Download feature</string>
+    <string name="download_storage_desc">This feature will allow you to save these exercises in your storage. However, in order to use this feature the app needs to download some files from the Playstore?</string>
+    <string name="download_tutorial_desc">This feature will show you how to use the app. You have previously uninstalled this feature, so you need to download it again to use it. Do you want to download this feature?</string>
+    <string name="downloading_already">This feature is already being downloaded</string>
+    <string name="download_include_storage">Include storage feature</string>
+    <string name="download_exercises_desc">This feature will allow you to generate random cryptography exercises for you to solve. Do you want to download this feature?</string>
 </resources>

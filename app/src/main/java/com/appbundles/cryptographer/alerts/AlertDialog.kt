@@ -42,6 +42,8 @@ class AlertDialog():DialogFragment(){
         fun onDownloadingCancel(){}
         fun onDownloadingFinish(){}
 
+        fun onDownloadTutorialYes(){}
+        fun onDownloadTutorialNo(){}
 
         fun onDownloadStorageYes(){}
         fun onDownloadStorageNo(){}
@@ -193,6 +195,11 @@ class AlertDialog():DialogFragment(){
                 dialogOptionTwo.setOnClickListener {  onClickListener?.onDownloadingCancel()}
                 dialogOptionThree.setOnClickListener { onClickListener?.onDownloadingFinish() }
             }
+
+            DIALOG_DOWNLOAD_TUTORIAL->{
+                dialogOptionOne.setOnClickListener { onClickListener?.onDownloadTutorialYes() }
+                dialogOptionTwo.setOnClickListener { onClickListener?.onDownloadTutorialNo() }
+            }
         }
 
 
@@ -247,6 +254,13 @@ class AlertDialog():DialogFragment(){
 
     }
 
+    fun setBody(body:String){
+        Handler(Looper.getMainLooper()).postDelayed({
+            run {
+                dialogBody.text = body
+            }
+        }, 100)
+    }
 
     fun setTitle(title:String){
         Handler(Looper.getMainLooper()).postDelayed({
@@ -254,6 +268,13 @@ class AlertDialog():DialogFragment(){
                 dialogTitle.text = title
             }
         }, 100)
+    }
+
+    fun getBody():String?{
+        return dialogBody.text.toString()
+    }
+    fun getTitle():String?{
+        return dialogTitle.text.toString()
     }
 
     override fun onResume() {

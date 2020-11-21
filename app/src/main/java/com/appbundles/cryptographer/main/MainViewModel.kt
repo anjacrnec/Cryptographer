@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 import com.appbundles.cryptographer.App
 import com.appbundles.cryptographer.features.Session
 import com.google.android.play.core.splitinstall.SplitInstallRequest
+import com.google.android.play.core.splitinstall.SplitInstallSessionState
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import com.google.android.play.core.tasks.OnFailureListener
@@ -16,37 +17,13 @@ class MainViewModel:ViewModel() {
     private val session = MutableLiveData<Session>()
     val sessionValue: LiveData<Session> = session
 
-    private val status = MutableLiveData<Int>()
-    val statusValue: LiveData<Int> = status
+    private val state = MutableLiveData<SplitInstallSessionState>()
+    val stateValue: LiveData<SplitInstallSessionState> = state
 
 
     fun initSplitListener() :SplitInstallStateUpdatedListener {
-        var listener = SplitInstallStateUpdatedListener { state ->
-            when (state.status()) {
-
-                SplitInstallSessionStatus.PENDING -> {
-                    status.postValue(SplitInstallSessionStatus.PENDING)
-                }
-
-                SplitInstallSessionStatus.DOWNLOADING -> {
-                    status.postValue(SplitInstallSessionStatus.DOWNLOADING)
-                }
-
-                SplitInstallSessionStatus.REQUIRES_USER_CONFIRMATION -> {
-
-                }
-                SplitInstallSessionStatus.INSTALLED -> {
-                    status.postValue(SplitInstallSessionStatus.INSTALLED)
-                }
-
-                SplitInstallSessionStatus.INSTALLING -> {
-                    status.postValue(SplitInstallSessionStatus.INSTALLING)
-                }
-
-                SplitInstallSessionStatus.FAILED, SplitInstallSessionStatus.UNKNOWN -> {
-                    status.postValue(SplitInstallSessionStatus.FAILED)
-                }
-            }
+        var listener = SplitInstallStateUpdatedListener { it ->
+                state.postValue(it)
         }
         return listener
     }

@@ -54,4 +54,14 @@
     <string name="status_error">Грешка</string>
 
     <string name="ok">ОК</string>
+    <string name="hide">Скриј</string>
+    <string name="cancel">Прекини</string>
+    <string name="yes">Да</string>
+    <string name="no">Не</string>
+    <string name="download_feature">Спушти модул</string>
+    <string name="download_storage_desc">Овај модул ќе ви овозможи да зачувувате задачи. За да го кориситите овај модул, треба да се спушти истиот од Playstore. Дали сакате да го спуштите овај модул?</string>
+    <string name="download_tutorial_desc">Овај модул ќе и покажи како да се користи апликацијата. Претходно сте го избришале овај модул, и мора повторно да се спушти за да го искористите. Дали сакате да го спуштите овај модул?</string>
+    <string name="downloading_already">Модулот веќе е во процес на спуштање</string>
+    <string name="download_include_storage">Вклучи модул за складирање задачи</string>
+    <string name="download_exercises_desc">Овај модул ќе овозможи генерирање на криптографски задачи. Дали сакате да го спуштите овај модул?</string>
 </resources>
