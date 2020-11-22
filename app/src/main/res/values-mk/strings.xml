@@ -64,4 +64,7 @@
     <string name="downloading_already">Модулот веќе е во процес на спуштање</string>
     <string name="download_include_storage">Вклучи модул за складирање задачи</string>
     <string name="download_exercises_desc">Овај модул ќе овозможи генерирање на криптографски задачи. Дали сакате да го спуштите овај модул?</string>
+    <string name="downloading_error_network">Потребна е интернет мрежа за да се спушти модулот.</string>
+    <string name="downloading_error_session">Веќе се спушта модул во моментов. Обидете се повторно откако заврши оваа сесија.</string>
+    <string name="downloading_error">Се случи грешка при спуштање на модулот. Обидете се пак подоцна.</string>
 </resources>

@@ -1,21 +1,26 @@
 package com.appbundles.cryptographer.main
 
+import android.util.Log
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import com.appbundles.cryptographer.App
-import com.appbundles.cryptographer.features.Session
+import com.google.android.play.core.splitinstall.SplitInstallException
 import com.google.android.play.core.splitinstall.SplitInstallRequest
 import com.google.android.play.core.splitinstall.SplitInstallSessionState
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
-import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
+import com.google.android.play.core.splitinstall.testing.FakeSplitInstallManager
+import com.google.android.play.core.splitinstall.testing.FakeSplitInstallManagerFactory
 import com.google.android.play.core.tasks.OnFailureListener
 import com.google.android.play.core.tasks.OnSuccessListener
 
 class MainViewModel:ViewModel() {
 
-    private val session = MutableLiveData<Session>()
-    val sessionValue: LiveData<Session> = session
+    private val session = MutableLiveData<Int>()
+    val sessionValue: LiveData<Int> = session
+
+    private val sessionError = MutableLiveData<Int>()
+    val sessionErrorValue: LiveData<Int> = sessionError
 
     private val state = MutableLiveData<SplitInstallSessionState>()
     val stateValue: LiveData<SplitInstallSessionState> = state
@@ -39,10 +44,12 @@ class MainViewModel:ViewModel() {
         App.getSplitInstallManager()
             .startInstall(request)
             .addOnSuccessListener(OnSuccessListener<Int> {
-                session.postValue(Session(it, type,null))
+                session.postValue(it)
              })
             .addOnFailureListener(OnFailureListener {
-
+                it.printStackTrace()
+                Log.e("ERROR_","error "+it.message)
+                sessionError.postValue((it as SplitInstallException).errorCode)
             })
     }
 

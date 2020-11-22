@@ -4,7 +4,6 @@ import com.appbundles.cryptographer.cryptographer.CryptographerFragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,10 +13,10 @@ import androidx.lifecycle.ViewModelProvider
 import com.appbundles.cryptographer.*
 import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.alerts.AlertFragment
-import com.appbundles.cryptographer.features.Session
 import com.example.bundles.BaseSplitActivity
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
+import com.google.android.play.core.splitinstall.model.SplitInstallErrorCode
 import com.google.android.play.core.splitinstall.model.SplitInstallSessionStatus
 import kotlinx.android.synthetic.main.activity_main.*
 
@@ -25,7 +24,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallback {
 
 
-    private lateinit var session:Session
+    private  var session:Int?=null
     private var cryptographerFragment: Fragment?=null
     private var exercisesFragment:Fragment?=null
     private var storageFragment:Fragment?=null
@@ -85,8 +84,29 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     private fun initViewModel(){
         viewModel = ViewModelProvider(this).get(MainViewModel::class.java)
 
-        viewModel.sessionValue.observe(this, Observer { session ->
-           this.session=session
+        viewModel.sessionValue.observe(this, Observer { id ->
+           session=id
+        })
+
+        viewModel.sessionErrorValue.observe(this, Observer { error->
+            val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?
+            dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
+            dialogDownloading?.setOptionOne(null)
+            dialogDownloading?.setOptionTwo(null)
+            dialogDownloading?.setIcon(R.drawable.ic_error)
+            dialogDownloading?.setOptionThree(ResUtil.getString(this, R.string.ok))
+            when(error){
+                SplitInstallErrorCode.NETWORK_ERROR -> {
+                    dialogDownloading?.setBody(ResUtil.getString(this, R.string.downloading_error_network))
+                }
+                SplitInstallErrorCode.ACTIVE_SESSIONS_LIMIT_EXCEEDED -> {
+                    dialogDownloading?.setBody(ResUtil.getString(this, R.string.downloading_error_session))
+                }
+                else->{
+                    dialogDownloading?.setBody(ResUtil.getString(this, R.string.downloading_error))
+                }
+            }
+
         })
 
 
@@ -171,6 +191,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                 }
 
                 SplitInstallSessionStatus.FAILED -> {
+
                     dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
                     dialogDownloading?.setIcon(R.drawable.ic_error)
                     alertFragment?.updateStatus(
@@ -278,7 +299,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
 
-    private fun showExercisesDownloadingDialog(){
+    private fun showDownloadingDialog(){
       val dialogDownloading= AlertDialog.newInstance(
           AlertDialog.DIALOG_DOWNLOADING,
           ResUtil.getString(this,R.string.status_pending),
@@ -381,7 +402,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                 App.getStorageFeatureUtil().featureName))
         else
             viewModel.install(arrayListOf(App.getExerciseFeatureUtil().featureName))
-        showExercisesDownloadingDialog()
+        showDownloadingDialog()
     }
 
     //download storage dialog callbacks
@@ -392,7 +413,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     override fun onDownloadStorageYes() {
         (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString()) as AlertDialog?)?.dismiss()
         viewModel.install(arrayListOf(App.getStorageFeatureUtil().featureName))
-        showExercisesDownloadingDialog()
+        showDownloadingDialog()
     }
 
 
@@ -409,7 +430,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     override fun onDownloadingCancel() {
         if(!App.getExerciseFeatureUtil().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        session?.let { splitInstallManager.cancelInstall(session.id) }
+        session?.let { splitInstallManager.cancelInstall(session!!) }
         (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)?.dismiss()
     }
 

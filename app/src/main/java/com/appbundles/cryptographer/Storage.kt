@@ -2,8 +2,6 @@ package com.appbundles.cryptographer
 
 import android.content.Context
 import android.content.SharedPreferences
-import com.appbundles.cryptographer.features.Session
-import com.google.gson.Gson
 
 
 class Storage {
@@ -47,18 +45,6 @@ class Storage {
         fun getExercisesStatus(context: Context):Int{
             val sp= getStorage(context)
             return sp.getInt(EXERCISES_STATUS, 0)
-        }
-
-        fun setCurrentExerciseSessions(context: Context, sessions: Session){
-            val sp= getStorage(context)
-            val json= Gson().toJson(sessions)
-            sp.edit().putString(SESSION, json).apply()
-        }
-
-        fun getCurrentExerciseSessions(context: Context):Session?{
-            val sp= getStorage(context)
-            val json: String? = sp.getString(SESSION, null)
-            return Gson().fromJson(json, Session::class.java)
         }
 
     }

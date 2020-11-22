@@ -257,6 +257,7 @@ class AlertDialog():DialogFragment(){
     fun setBody(body:String){
         Handler(Looper.getMainLooper()).postDelayed({
             run {
+                dialogBody.visibility=View.VISIBLE
                 dialogBody.text = body
             }
         }, 100)

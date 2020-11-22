@@ -71,4 +71,7 @@
     <string name="downloading_already">This feature is already being downloaded</string>
     <string name="download_include_storage">Include storage feature</string>
     <string name="download_exercises_desc">This feature will allow you to generate random cryptography exercises for you to solve. Do you want to download this feature?</string>
+    <string name="downloading_error_network">You need an internet connection to download the module</string>
+    <string name="downloading_error_session">You are already downloading a feature at the moment. You can download this module once the previous session is done.</string>
+    <string name="downloading_error">Error occured when downloading the module. Try again later.</string>
 </resources>
