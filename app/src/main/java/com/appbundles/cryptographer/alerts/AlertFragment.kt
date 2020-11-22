@@ -72,6 +72,9 @@ class AlertFragment:BaseSplitFragment() {
     }
 
     companion object {
+        val STATUS_FRAGMENT="status"
+        val STORAGE_FRAGMENT="storage"
+
         @JvmStatic
         fun newInstance(status: String?, body:String?,progress:Boolean) =
             AlertFragment().apply {

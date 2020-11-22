@@ -32,7 +32,7 @@ class AlertDialog():DialogFragment(){
     private lateinit var dialogCheckbox: CheckBox
     private lateinit var dialogIcon: ImageView
     private lateinit var dialogProgress: ProgressBar
-    private var dialogType:Int= R.drawable.ic_placeholder
+    private var dialogType:String?=null
 
     private var onClickListener: OnClickListener? = null
 
@@ -55,10 +55,10 @@ class AlertDialog():DialogFragment(){
 
     companion object{
 
-        const val DIALOG_DOWNLOAD_EXERCISE= 1
-        const val DIALOG_DOWNLOAD_STORAGE = 2
-        const val DIALOG_DOWNLOAD_TUTORIAL=3
-        const val DIALOG_DOWNLOADING= 4
+        const val DIALOG_DOWNLOAD_EXERCISE= "dialog_download_exercise"
+        const val DIALOG_DOWNLOAD_STORAGE = "dialog_download_storage"
+        const val DIALOG_DOWNLOAD_TUTORIAL="dialog_download_tutorial"
+        const val DIALOG_DOWNLOADING= "dialog_downloading"
 
         private const val DIALOG_TITLE: String = "title"
         private const val DIALOG_BODY = "body"
@@ -70,7 +70,7 @@ class AlertDialog():DialogFragment(){
         private const val DIALOG_TYPE="type"
         private const val DIALOG_PROGRESS="progress"
 
-        fun newInstance(type:Int): AlertDialog?{
+        fun newInstance(type:String): AlertDialog?{
             when(type){
                 DIALOG_DOWNLOAD_EXERCISE ->
                     return  newInstance(
@@ -88,7 +88,7 @@ class AlertDialog():DialogFragment(){
             return null
         }
 
-        fun newInstance(type:Int,title: String?, body: String?, check:String?, optionOne: String?, optionTwo: String?, optionThree: String?, icon:Int?,progress:Boolean): AlertDialog {
+        fun newInstance(type:String,title: String?, body: String?, check:String?, optionOne: String?, optionTwo: String?, optionThree: String?, icon:Int?,progress:Boolean): AlertDialog {
             val args = Bundle()
             args.putString(DIALOG_TITLE, title)
             args.putString(DIALOG_BODY, body)
@@ -99,7 +99,7 @@ class AlertDialog():DialogFragment(){
             if (icon != null) {
                 args.putInt(DIALOG_ICON,icon)
             }
-            args.putInt(DIALOG_TYPE, type)
+            args.putString(DIALOG_TYPE, type)
             args.putBoolean(DIALOG_PROGRESS,progress)
             val fragment = AlertDialog()
             fragment.arguments = args
@@ -117,7 +117,7 @@ class AlertDialog():DialogFragment(){
         check=arguments?.getString(DIALOG_CB)
         icon=arguments?.getInt(DIALOG_ICON)
         progress=arguments?.getBoolean(DIALOG_PROGRESS)
-        dialogType= arguments?.getInt(DIALOG_TYPE)!!
+        dialogType= arguments?.getString(DIALOG_TYPE)!!
 
     }
 

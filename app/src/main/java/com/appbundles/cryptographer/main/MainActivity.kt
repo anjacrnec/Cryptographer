@@ -33,7 +33,6 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     private lateinit var viewModel: MainViewModel
     val TAG_CRYPTOGRAPHER_FRAGMENT = "cryptographer"
     val TAG_EXERCISES_FRAGMENT = "exercises"
-    val TAG_STATUS_FRAGMENT="status"
     val TAG_STORAGE_FRAGMENT="storage"
 
 
@@ -89,7 +88,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         })
 
         viewModel.sessionErrorValue.observe(this, Observer { error->
-            val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?
+            val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?
             dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
             dialogDownloading?.setOptionOne(null)
             dialogDownloading?.setOptionTwo(null)
@@ -111,8 +110,8 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
 
         viewModel.stateValue.observe(this, Observer { state ->
-            val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?
-            val alertFragment: AlertFragment? = findFragmentByTag(TAG_STATUS_FRAGMENT) as AlertFragment?
+            val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?
+            val alertFragment: AlertFragment? = findFragmentByTag(AlertFragment.STATUS_FRAGMENT) as AlertFragment?
             var featuresDownloading=""
 
             for(featureName in state.moduleNames()){
@@ -365,7 +364,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
     private fun showAlertFragment(status: String?, body:String?,progress: Boolean){
         val statusFragment= AlertFragment.newInstance(status, body,progress)
-        loadFragment(R.id.mainStatusContainer, statusFragment, TAG_STATUS_FRAGMENT)
+        loadFragment(R.id.mainStatusContainer, statusFragment, AlertFragment.STATUS_FRAGMENT)
     }
 
     private fun hideAlertFragment(delay: Boolean)
@@ -377,7 +376,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
     private fun hideAlertFragment(){
-       val alertFragment: AlertFragment?=supportFragmentManager.findFragmentByTag(TAG_STATUS_FRAGMENT) as AlertFragment?
+       val alertFragment: AlertFragment?=findFragmentByTag(AlertFragment.STATUS_FRAGMENT) as AlertFragment?
         removeFragment(alertFragment)
     }
 
@@ -389,12 +388,12 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     //download exercises dialog callbacks
     override fun onDownloadExercisesNo() {
         mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        val dialog:AlertDialog?=findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString()) as AlertDialog
+        val dialog:AlertDialog?=findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_EXERCISE) as AlertDialog
         dialog?.dismiss()
     }
 
     override fun onDownloadExerciseYes(includeSave: Boolean) {
-        val dialog:AlertDialog?=findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString()) as AlertDialog
+        val dialog:AlertDialog?=findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_EXERCISE) as AlertDialog
         dialog?.dismiss()
         if(includeSave)
             viewModel.install(arrayListOf(
@@ -407,11 +406,11 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
     //download storage dialog callbacks
     override fun onDownloadStorageNo() {
-        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString()) as AlertDialog?)?.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE) as AlertDialog?)?.dismiss()
     }
 
     override fun onDownloadStorageYes() {
-        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString()) as AlertDialog?)?.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE) as AlertDialog?)?.dismiss()
         viewModel.install(arrayListOf(App.getStorageFeatureUtil().featureName))
         showDownloadingDialog()
     }
@@ -419,7 +418,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
     //download tutorial callbacks
     override fun onDownloadTutorialNo() {
-        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_TUTORIAL.toString()) as AlertDialog?)?.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_TUTORIAL) as AlertDialog?)?.dismiss()
     }
 
     override fun onDownloadTutorialYes() {
@@ -431,13 +430,13 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         if(!App.getExerciseFeatureUtil().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
         session?.let { splitInstallManager.cancelInstall(session!!) }
-        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)?.dismiss()
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)?.dismiss()
     }
 
     override fun onDownloadingHide() {
         if(!App.getExerciseFeatureUtil().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
-        val dialog=(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)
+        val dialog=(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)
         val body= dialog?.getBody()
         val title=dialog?.getTitle()
         dialog?.dismiss()
@@ -445,14 +444,15 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
     override fun onDownloadingFinish() {
-        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) as AlertDialog?)?.dismiss()
+        if(!App.getExerciseFeatureUtil().isInstalled())
+            mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
+        (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)?.dismiss()
     }
-
-
 
     override fun isAlertFragmentVisible(): Boolean {
-        return findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING.toString()) != null
+        return findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) != null
     }
+
     override fun showDialog() {
         showStorageDownloadDialog()
     }
