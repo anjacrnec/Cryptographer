@@ -90,7 +90,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         })
 
         viewModel.sessionErrorValue.observe(this, Observer { error->
-           /* val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?
+           val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?
             dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
             dialogDownloading?.setOptionOne(null)
             dialogDownloading?.setOptionTwo(null)
@@ -106,7 +106,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                 else->{
                     dialogDownloading?.setBody(ResUtil.getString(this, R.string.downloading_error))
                 }
-            }*/
+            }
 
         })
 
