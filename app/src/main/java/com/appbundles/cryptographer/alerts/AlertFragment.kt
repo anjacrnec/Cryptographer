@@ -10,11 +10,6 @@ import kotlinx.android.synthetic.main.fragment_status.*
 
 class AlertFragment:BaseSplitFragment() {
 
-    var STATUS_TITLE="title"
-    var STATUS_ICON="icon"
-    var STATUS_PROGESS="progress"
-    var STATUS_BODY="body"
-
     private var title: String? = null
     private var icon: Int? = null
     private var progress: Boolean? = null
@@ -28,9 +23,10 @@ class AlertFragment:BaseSplitFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         arguments?.let {
-           title = it.getString(STATUS_TITLE)
+            title = it.getString(Companion.STATUS_TITLE)
             progress=it.getBoolean(STATUS_PROGESS)
             body=it.getString(STATUS_BODY)
+            icon=it.getInt(STATUS_ICON)
         }
     }
 
@@ -50,11 +46,17 @@ class AlertFragment:BaseSplitFragment() {
         status_title.text=title
         if(icon==null)
             status_icon.visibility=View.GONE
+        else
+        {
+            status_icon.visibility=View.VISIBLE
+            status_icon.setImageResource(icon!!)
+        }
         if(progress!=null && progress==true)
             status_progress.visibility=View.VISIBLE
+
     }
 
-    fun updateStatus(title:String?, body:String?, icon:Int?, progress:Boolean ){
+    fun updateStatus(title:String?, body:String?, icon:Int?, progress:Boolean){
         if(title!=null)
             status_title.text=title
         if(body!=null)
@@ -63,7 +65,7 @@ class AlertFragment:BaseSplitFragment() {
             status_icon.visibility=View.GONE
         else {
             status_icon.visibility=View.VISIBLE
-            status_icon.setImageResource(R.drawable.ic_done)
+            status_icon.setImageResource(icon)
         }
         if(progress)
             status_progress.visibility=View.VISIBLE
@@ -72,18 +74,25 @@ class AlertFragment:BaseSplitFragment() {
     }
 
     companion object {
-        val STATUS_FRAGMENT="status"
-        val STORAGE_FRAGMENT="storage"
+        private const val STATUS_ICON="icon"
+        private const val  STATUS_PROGESS="progress"
+        private const val STATUS_BODY="body"
+        private const val STATUS_TITLE="title"
+
+        const val STATUS_FRAGMENT="status"
 
         @JvmStatic
-        fun newInstance(status: String?, body:String?,progress:Boolean) =
+        fun newInstance(status: String?, body:String?,progress:Boolean, icon:Int?) =
             AlertFragment().apply {
                 arguments = Bundle().apply {
-                    putString(STATUS_TITLE, status)
+                    putString(Companion.STATUS_TITLE, status)
                     putString(STATUS_BODY, body)
                     putBoolean(STATUS_PROGESS, progress)
+                    icon?.let { putInt(STATUS_ICON,icon) }
+
                 }
             }
+
     }
 
 }

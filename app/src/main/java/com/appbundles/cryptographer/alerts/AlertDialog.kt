@@ -59,7 +59,6 @@ class AlertDialog():DialogFragment(){
         const val DIALOG_DOWNLOAD_STORAGE = "dialog_download_storage"
         const val DIALOG_DOWNLOAD_TUTORIAL="dialog_download_tutorial"
         const val DIALOG_DOWNLOADING= "dialog_downloading"
-
         private const val DIALOG_TITLE: String = "title"
         private const val DIALOG_BODY = "body"
         private const val DIALOG_OPTION_ONE = "one"
@@ -69,24 +68,6 @@ class AlertDialog():DialogFragment(){
         private const val DIALOG_ICON="icon"
         private const val DIALOG_TYPE="type"
         private const val DIALOG_PROGRESS="progress"
-
-        fun newInstance(type:String): AlertDialog?{
-            when(type){
-                DIALOG_DOWNLOAD_EXERCISE ->
-                    return  newInstance(
-                       DIALOG_DOWNLOAD_EXERCISE,
-                        "Title",
-                        "In order to use this feature you need to...",
-                        "Include exercises feature",
-                        "Yes",
-                        "No",
-                        "Never",
-                        R.drawable.ic_download,
-                        false
-                    )
-            }
-            return null
-        }
 
         fun newInstance(type:String,title: String?, body: String?, check:String?, optionOne: String?, optionTwo: String?, optionThree: String?, icon:Int?,progress:Boolean): AlertDialog {
             val args = Bundle()
@@ -147,8 +128,10 @@ class AlertDialog():DialogFragment(){
         else
             dialogBody.visibility=View.GONE
 
-        if(icon!=null)
+        if(icon!=null) {
             dialogIcon.setImageResource(icon!!)
+            dialogIcon.tag = icon.toString()
+        }
         else
             dialogIcon.visibility=View.VISIBLE
 
@@ -244,11 +227,9 @@ class AlertDialog():DialogFragment(){
     fun setIcon(icon:Int){
         Handler(Looper.getMainLooper()).postDelayed({
             run {
-                if(dialogIcon.visibility==View.GONE)
-                    dialogIcon.visibility=View.VISIBLE
-                if(dialogProgress.visibility==View.VISIBLE)
-                    dialogProgress.visibility=View.GONE
+                dialogIcon.visibility=View.VISIBLE
                 dialogIcon.setImageResource(icon)
+                dialogIcon.tag= icon.toString()
             }
         }, 100)
 
@@ -274,8 +255,14 @@ class AlertDialog():DialogFragment(){
     fun getBody():String?{
         return dialogBody.text.toString()
     }
+
     fun getTitle():String?{
         return dialogTitle.text.toString()
+    }
+
+    fun getIcon():Int?{
+        val icon=dialogIcon.tag
+        return  icon.toString().toIntOrNull()
     }
 
     override fun onResume() {

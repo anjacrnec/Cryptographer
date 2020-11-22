@@ -4,6 +4,7 @@ import com.appbundles.cryptographer.cryptographer.CryptographerFragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
+import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +15,7 @@ import com.appbundles.cryptographer.*
 import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.alerts.AlertFragment
 import com.example.bundles.BaseSplitActivity
+import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallStateUpdatedListener
 import com.google.android.play.core.splitinstall.model.SplitInstallErrorCode
@@ -88,7 +90,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         })
 
         viewModel.sessionErrorValue.observe(this, Observer { error->
-            val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?
+           /* val dialogDownloading: AlertDialog? = findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?
             dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
             dialogDownloading?.setOptionOne(null)
             dialogDownloading?.setOptionTwo(null)
@@ -104,7 +106,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                 else->{
                     dialogDownloading?.setBody(ResUtil.getString(this, R.string.downloading_error))
                 }
-            }
+            }*/
 
         })
 
@@ -193,9 +195,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
                     dialogDownloading?.setTitle(ResUtil.getString(this, R.string.status_error))
                     dialogDownloading?.setIcon(R.drawable.ic_error)
-                    alertFragment?.updateStatus(
-                        ResUtil.getString(this, R.string.status_error),featuresDownloading,
-                        R.drawable.ic_error, true)
+                    alertFragment?.updateStatus(ResUtil.getString(this, R.string.status_error),featuresDownloading, R.drawable.ic_error, true)
                 }
             }
         })
@@ -253,8 +253,16 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                 } else if (item == R.id.navExercises) {
                     if (App.getExerciseFeatureUtil().isInstalled())
                         navigateToExercisesFragment()
-                    else
-                        showExercisesDownloadDialog()
+                    else{
+                        if(isAlertFragmentVisible()) {
+                            mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
+                            Snackbar.make(mainStatusContainer,
+                                ResUtil.getString(this, R.string.downloading_already),
+                                Snackbar.LENGTH_SHORT).show()
+                        }else
+                            showExercisesDownloadDialog()
+                    }
+
                 } else if (item == 3)
                     navigateToStorageFragment()
 
@@ -311,7 +319,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
           true
       )
         dialogDownloading.isCancelable=false
-        dialogDownloading.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOADING.toString())
+        dialogDownloading.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOADING)
     }
 
     private fun showExercisesDownloadDialog() {
@@ -327,7 +335,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
             false
         )
         dialog.isCancelable=false
-        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_EXERCISE.toString())
+        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_EXERCISE)
     }
 
     private fun showStorageDownloadDialog(){
@@ -343,7 +351,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
             false
         )
         dialog.isCancelable=false
-        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_STORAGE.toString())
+        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_STORAGE)
     }
 
     private fun showTutorialDownloadDialog(){
@@ -359,11 +367,11 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
             false
         )
         dialog.isCancelable=false
-        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_TUTORIAL.toString())
+        dialog.show(supportFragmentManager, AlertDialog.DIALOG_DOWNLOAD_TUTORIAL)
     }
 
-    private fun showAlertFragment(status: String?, body:String?,progress: Boolean){
-        val statusFragment= AlertFragment.newInstance(status, body,progress)
+    private fun showAlertFragment(status: String?, body:String?,progress: Boolean,icon:Int?){
+        val statusFragment= AlertFragment.newInstance(status, body,progress,icon)
         loadFragment(R.id.mainStatusContainer, statusFragment, AlertFragment.STATUS_FRAGMENT)
     }
 
@@ -439,8 +447,9 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         val dialog=(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)
         val body= dialog?.getBody()
         val title=dialog?.getTitle()
+        val icon=dialog?.getIcon()
         dialog?.dismiss()
-        showAlertFragment(title,body,true)
+        showAlertFragment(title,body,true,icon)
     }
 
     override fun onDownloadingFinish() {
@@ -450,7 +459,8 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
     override fun isAlertFragmentVisible(): Boolean {
-        return findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) != null
+
+        return findFragmentByTag(AlertFragment.STATUS_FRAGMENT) != null
     }
 
     override fun showDialog() {
