@@ -1,15 +1,18 @@
 package com.appbundles.exercises
 
 import android.content.Context
+import android.graphics.Color
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.TextView
 import com.appbundles.cryptographer.App
 import com.appbundles.cryptographer.ResUtil
 import com.appbundles.cryptographer.alerts.AlertDialog
+import com.appbundles.cryptographer.alerts.AlertSnackbar
 import com.appbundles.cryptographer.main.MainCallback
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
@@ -67,7 +70,7 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
                 if (!mainCallback.isAlertFragmentVisible())
                     mainCallback.showDialog()
                 else
-                    Snackbar.make(exSaveBtn, ResUtil.getString(
+                    AlertSnackbar(exSaveBtn, ResUtil.getString(
                         requireContext(),
                         com.appbundles.cryptographer.R.string.downloading_already),
                         Snackbar.LENGTH_SHORT).show()
@@ -114,8 +117,8 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
         val storageProvider =
             Class.forName("com.appbundles.exercises_storage.StorageImplementation\$Provider").kotlin.objectInstance as StorageInterface.Provider
         storageProvider.get().saveExercise(exercise)
-        Snackbar.make(exSaveBtn, ResUtil.getString(requireContext(),R.string.exercise_is_saved), Snackbar.LENGTH_SHORT)
-            .setAction(ResUtil.getString(requireContext(),R.string.ok), View.OnClickListener { }).show()
+        AlertSnackbar(exSaveBtn, ResUtil.getString(requireContext(), R.string.exercise_is_saved), Snackbar.LENGTH_SHORT).show()
+
     }
 
     private fun enableNextExercise(){
@@ -127,7 +130,8 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
             }
         }
         exNextBtn.isEnabled=false
-        Snackbar.make(exSaveBtn, R.string.ciphers_disabled, Snackbar.LENGTH_SHORT).show()
+        AlertSnackbar(exSaveBtn, ResUtil.getString(requireContext(), R.string.ciphers_disabled), Snackbar.LENGTH_SHORT).show()
+
     }
 
     private fun setAnswerTextChangeListener(){

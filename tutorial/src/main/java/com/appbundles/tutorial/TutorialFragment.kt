@@ -19,7 +19,7 @@ class TutorialFragment : Fragment() {
     override fun onActivityCreated(savedInstanceState: Bundle?) {
         super.onActivityCreated(savedInstanceState)
 
-        loadInstructions(R.raw.tutorial_instructions_1)
+        loadInstructions(R.drawable.tutorial_instruction_1)
 
         tutorial_skip_btn.setOnClickListener {
             navigateToMain()
@@ -49,10 +49,10 @@ class TutorialFragment : Fragment() {
     private fun loadNextInstructions(){
         when(tutorial_image.tag.toString()){
            INSTRUCTIONS_FIRST-> {
-               loadInstructions(R.raw.tutorial_instructions_2)
+               loadInstructions(R.drawable.tutorial_instruction_2)
                tutorial_previous_btn.visibility=View.VISIBLE
            }
-           INSTRUCTIONS_SECOND-> loadInstructions(R.raw.tutorial_instrcutions_3)
+           INSTRUCTIONS_SECOND-> loadInstructions(R.drawable.tutorial_instruction_3)
            INSTRUCTIONS_THIRD->{
                 navigateToMain()
            }
@@ -62,19 +62,19 @@ class TutorialFragment : Fragment() {
     private fun loadPrevInstructions(){
         when(tutorial_image.tag.toString()){
             INSTRUCTIONS_SECOND-> {
-                loadInstructions(R.raw.tutorial_instructions_1)
+                loadInstructions(R.drawable.tutorial_instruction_1)
                 tutorial_previous_btn.visibility=View.GONE
             }
-            INSTRUCTIONS_THIRD-> loadInstructions(R.raw.tutorial_instructions_2)
+            INSTRUCTIONS_THIRD-> loadInstructions(R.drawable.tutorial_instruction_2)
         }
     }
 
     private fun loadInstructions(gif:Int) {
         ImageUtility.loadImage(gif,tutorial_image)
         when (gif) {
-            R.raw.tutorial_instructions_1 -> tutorial_image.tag = INSTRUCTIONS_FIRST
-            R.raw.tutorial_instructions_2 -> tutorial_image.tag = INSTRUCTIONS_SECOND
-            R.raw.tutorial_instrcutions_3 -> tutorial_image.tag = INSTRUCTIONS_THIRD
+            R.drawable.tutorial_instruction_1 -> tutorial_image.tag = INSTRUCTIONS_FIRST
+            R.drawable.tutorial_instruction_2 -> tutorial_image.tag = INSTRUCTIONS_SECOND
+            R.drawable.tutorial_instruction_3 -> tutorial_image.tag = INSTRUCTIONS_THIRD
         }
     }
 

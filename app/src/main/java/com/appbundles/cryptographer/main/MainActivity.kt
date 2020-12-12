@@ -62,7 +62,10 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        menuInflater.inflate(R.menu.settings_navigation, menu)
+        if (App.getTutorialFeatureUtil().isInstalled() && !Storage.getUninstallTutorial(applicationContext)) {
+                menuInflater.inflate(R.menu.settings_navigation, menu)
+                return super.onCreateOptionsMenu(menu)
+            }
         return super.onCreateOptionsMenu(menu)
     }
 
@@ -75,8 +78,6 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                     && !Storage.getUninstallTutorial(applicationContext)
                 )
                     navigateToTutorial()
-                else
-                    showTutorialDownloadDialog()
             }
         }
         return super.onOptionsItemSelected(item)
@@ -274,12 +275,9 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     private fun initFeatures(){
         if(App.getTutorialFeatureUtil().isInstalled()
             && Storage.getUninstallTutorial(applicationContext)
-        )
-            splitInstallManager.deferredUninstall(
-                arrayListOf(
-                    App.getTutorialFeatureUtil().featureName
-                )
-            )
+        ) {
+            splitInstallManager.deferredUninstall(arrayListOf(App.getTutorialFeatureUtil().featureName))
+        }
     }
 
     private fun navigateToTutorial(){

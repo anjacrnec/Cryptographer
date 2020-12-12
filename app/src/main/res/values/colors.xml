@@ -2,11 +2,12 @@
 <resources>
     <color name="colorPrimary">#6200EE</color>
     <color name="colorPrimaryDark">#3700B3</color>
-    <color name="colorAccent">#EEB407</color>
+    <color name="colorAccent">#3ddc85</color>
 
+    <color name="snackbar">#001720</color>
     <color name="color_primary_light">#9E9E9E</color>
-    <color name="color_primary_medium">#494747</color>
-    <color name="color_primary_dark">#2B2A2A</color>
-    <color name="color_primary_darkest">#191919</color>
-    <color name="color_accent">#EEB407</color>
+    <color name="color_primary_medium">#083042</color>
+    <color name="color_primary_dark">#083042</color>
+    <color name="color_primary_darkest">#052330</color>
+    <color name="color_accent">#3ddc85</color>
 </resources>

@@ -53,6 +53,8 @@ class AlertFragment:BaseSplitFragment() {
         }
         if(progress!=null && progress==true)
             status_progress.visibility=View.VISIBLE
+        else
+            status_progress.visibility=View.GONE
 
     }
 

@@ -4,6 +4,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical"
+    android:background="#dcdcdc"
     >
 
     <androidx.recyclerview.widget.RecyclerView
@@ -12,6 +13,7 @@
         android:layout_height="wrap_content"
         tools:itemCount="12"
         tools:listitem="@layout/item_exercise"
+        android:background="#dcdcdc"
         />
 
 </LinearLayout>

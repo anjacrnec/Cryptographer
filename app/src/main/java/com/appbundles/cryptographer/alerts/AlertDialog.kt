@@ -227,6 +227,7 @@ class AlertDialog():DialogFragment(){
     fun setIcon(icon:Int){
         Handler(Looper.getMainLooper()).postDelayed({
             run {
+                dialogProgress.visibility=View.GONE
                 dialogIcon.visibility=View.VISIBLE
                 dialogIcon.setImageResource(icon)
                 dialogIcon.tag= icon.toString()
