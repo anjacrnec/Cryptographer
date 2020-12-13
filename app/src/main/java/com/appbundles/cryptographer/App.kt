@@ -1,7 +1,7 @@
 package com.appbundles.cryptographer
 
 import android.content.Context
-import com.appbundles.cryptographer.features.Feature
+import com.appbundles.cryptographer.features.*
 import com.google.android.play.core.splitcompat.SplitCompatApplication
 import com.google.android.play.core.splitinstall.SplitInstallManager
 import com.google.android.play.core.splitinstall.SplitInstallManagerFactory
@@ -15,41 +15,12 @@ class App:SplitCompatApplication() {
 
         splitInstallManager= SplitInstallManagerFactory.create(context)
 
-        mainModule=Feature(
-            this,
-            "app",
-            "com.appbundles.app.",
-            null,
-            null,
-            true
+
+        allFeaturesUtil= arrayListOf(
+            TutorialSingleton.getInstance(),
+            ExercisesSingleton.getInstance(),
+            StorageSingleton.getInstance()
         )
-
-        tutorialFeatureUtil= Feature(
-            this,
-            "tutorial",
-            "com.appbundles.tutorial.",
-            null,
-            arrayListOf("TutorialActivity"),
-        false
-        )
-
-        exerciseFeatureUtil= Feature(
-            this,
-            "exercises",
-            "com.appbundles.exercises.",
-            arrayListOf("ExercisesFragment"),
-            null,
-        false)
-
-        storageFeatureUtil= Feature(
-            this,
-            "exercises_storage",
-            "com.appbundles.exercises_storage.",
-            arrayListOf("SavedExercises"),
-            null,
-        false)
-
-        allFeaturesUtil= arrayListOf(mainModule, exerciseFeatureUtil, storageFeatureUtil, tutorialFeatureUtil)
 
     }
 
@@ -57,11 +28,7 @@ class App:SplitCompatApplication() {
     companion object{
         private lateinit var context:Context
         private lateinit var splitInstallManager:SplitInstallManager
-        private lateinit var allFeaturesUtil:List<Feature>
-        private lateinit var mainModule:Feature
-        private lateinit var tutorialFeatureUtil:Feature
-        private lateinit var exerciseFeatureUtil:Feature
-        private lateinit var storageFeatureUtil:Feature
+        private lateinit var allFeaturesUtil:List<BaseFeatureSingleton>
 
         fun getSplitInstallManager():SplitInstallManager{
             return splitInstallManager
@@ -70,21 +37,10 @@ class App:SplitCompatApplication() {
         fun getApplicationContext():Context{
             return context
         }
-        fun getAllFeaturesUtil():List<Feature>{
+        fun getAllFeaturesUtil():List<BaseFeatureSingleton>{
             return allFeaturesUtil
         }
 
-        fun getExerciseFeatureUtil():Feature{
-            return exerciseFeatureUtil
-        }
-
-        fun getStorageFeatureUtil():Feature{
-            return storageFeatureUtil
-        }
-
-        fun getTutorialFeatureUtil():Feature{
-            return tutorialFeatureUtil
-        }
 
     }
 

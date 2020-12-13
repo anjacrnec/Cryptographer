@@ -34,7 +34,7 @@ class TutorialFragment : Fragment() {
         }
 
         tutorial_skip_checkbox.setOnCheckedChangeListener { _, isChecked ->
-            Storage.setUninstallTutorial(activity!!.applicationContext,isChecked)
+            Storage.setUninstallTutorial(isChecked)
         }
 
     }
@@ -83,7 +83,7 @@ class TutorialFragment : Fragment() {
         intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
         intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         startActivity(intent)
-        Storage.setSkipTutorial(activity!!.applicationContext,true)
+        Storage.setSkipTutorial(true)
         activity?.finish()
     }
 

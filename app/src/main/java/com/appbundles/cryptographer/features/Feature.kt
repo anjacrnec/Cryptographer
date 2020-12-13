@@ -16,12 +16,12 @@ import java.lang.Exception
 
 open class Feature(
     private val context: Context,
-    open val featureName:String,
+     private val featureName:String,
     private val featureDirectory:String,
     private val fragmentInfo:List<String>?,
     private val activityInfo:List<String>?,
     private val isBase:Boolean
-)
+):BaseFeatureInterface
 {
 
     private lateinit var packageName:String
@@ -35,7 +35,7 @@ open class Feature(
 
 
     @SuppressLint("UseCompatLoadingForDrawables")
-    fun getDrawable(name:String):Drawable?{
+    override fun getDrawable(name:String):Drawable?{
         return try {
             val drawable = resources.getDrawable(
                 resources.getIdentifier(
@@ -50,7 +50,7 @@ open class Feature(
         }
     }
 
-    fun getString(name:String):String?{
+    override fun getString(name:String):String?{
         return try {
             val string = resources.getString(
                 resources.getIdentifier(
@@ -65,7 +65,7 @@ open class Feature(
         }
     }
 
-    fun createActivity(context:Context,tag:String):Intent?{
+    override fun createIntent(context:Context,tag:String):Intent?{
         var activityDirectory=""
         activityInfo?.let {
             for (i in activityInfo.indices)
@@ -81,7 +81,7 @@ open class Feature(
         return null
     }
 
-    fun createFragment(tag:String):Fragment?{
+    override fun createFragment(tag:String):Fragment?{
         var fragmentDirectory=""
         fragmentInfo?.let {
             for (i in fragmentInfo.indices)
@@ -94,15 +94,21 @@ open class Feature(
                     }
                 }
         }
+
         return null
     }
 
-    fun isInstalled():Boolean{
+    override fun isInstalled():Boolean{
         return App.getSplitInstallManager().installedModules.contains(featureName)
     }
 
-    fun getLocalFeatureName():String?{
+    override fun getLocalFeatureName():String?{
         return ResUtil.getString(featureName)
     }
+
+    override fun getFeatureName(): String {
+        return featureName
+    }
+
 
 }

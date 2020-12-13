@@ -13,6 +13,8 @@ import com.appbundles.cryptographer.App
 import com.appbundles.cryptographer.ResUtil
 import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.alerts.AlertSnackbar
+import com.appbundles.cryptographer.features.ExercisesSingleton
+import com.appbundles.cryptographer.features.StorageSingleton
 import com.appbundles.cryptographer.main.MainCallback
 import com.example.bundles.BaseSplitFragment
 import com.google.android.material.chip.Chip
@@ -64,7 +66,7 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
 
 
         exSaveBtn.setOnClickListener {
-            if (App.getStorageFeatureUtil().isInstalled()) {
+            if (ExercisesSingleton.getInstance().isInstalled()) {
                 saveExercise()
             } else {
                 if (!mainCallback.isAlertFragmentVisible())
@@ -114,8 +116,7 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
     }
 
     private fun saveExercise(){
-        val storageProvider =
-            Class.forName("com.appbundles.exercises_storage.StorageImplementation\$Provider").kotlin.objectInstance as StorageInterface.Provider
+        val storageProvider = StorageSingleton.getInstance().getProvider() as StorageInterface.Provider
         storageProvider.get().saveExercise(exercise)
         AlertSnackbar(exSaveBtn, ResUtil.getString(requireContext(), R.string.exercise_is_saved), Snackbar.LENGTH_SHORT).show()
 
@@ -131,7 +132,6 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
         }
         exNextBtn.isEnabled=false
         AlertSnackbar(exSaveBtn, ResUtil.getString(requireContext(), R.string.ciphers_disabled), Snackbar.LENGTH_SHORT).show()
-
     }
 
     private fun setAnswerTextChangeListener(){

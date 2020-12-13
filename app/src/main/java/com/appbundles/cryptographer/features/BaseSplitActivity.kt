@@ -22,7 +22,6 @@ abstract class BaseSplitActivity : AppCompatActivity() {
     }
 
 
-
     fun findFragmentByTag(tag: String):Fragment?{
         return supportFragmentManager.findFragmentByTag(tag)
     }

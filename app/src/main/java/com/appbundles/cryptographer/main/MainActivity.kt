@@ -4,7 +4,6 @@ import com.appbundles.cryptographer.cryptographer.CryptographerFragment
 import android.os.Bundle
 import android.os.Handler
 import android.os.Looper
-import android.util.Log
 import android.view.Menu
 import android.view.MenuItem
 import android.view.View
@@ -14,6 +13,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.appbundles.cryptographer.*
 import com.appbundles.cryptographer.alerts.AlertDialog
 import com.appbundles.cryptographer.alerts.AlertFragment
+import com.appbundles.cryptographer.features.ExercisesSingleton
+import com.appbundles.cryptographer.features.StorageSingleton
+import com.appbundles.cryptographer.features.TutorialSingleton
 import com.example.bundles.BaseSplitActivity
 import com.google.android.material.snackbar.Snackbar
 import com.google.android.play.core.splitinstall.SplitInstallManager
@@ -62,7 +64,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
     override fun onCreateOptionsMenu(menu: Menu?): Boolean {
-        if (App.getTutorialFeatureUtil().isInstalled() && !Storage.getUninstallTutorial(applicationContext)) {
+        if (TutorialSingleton.getInstance().isInstalled() && !Storage.getUninstallTutorial()) {
                 menuInflater.inflate(R.menu.settings_navigation, menu)
                 return super.onCreateOptionsMenu(menu)
             }
@@ -74,8 +76,8 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         val id = item.itemId
         when (id) {
             R.id.settings_help -> {
-                if (App.getTutorialFeatureUtil().isInstalled()
-                    && !Storage.getUninstallTutorial(applicationContext)
+                if (TutorialSingleton.getInstance().isInstalled()
+                    && !Storage.getUninstallTutorial()
                 )
                     navigateToTutorial()
             }
@@ -119,7 +121,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
             for(featureName in state.moduleNames()){
                 for(feature in App.getAllFeaturesUtil())
-                    if(featureName==feature.featureName){
+                    if(featureName==feature.getFeatureName()){
                         if(dialogDownloading==null || state.moduleNames().size==1)
                             featuresDownloading=featuresDownloading+feature.getLocalFeatureName()+" "
                         else {
@@ -161,27 +163,29 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                         R.drawable.ic_done, false)
                     hideAlertFragment(true)
 
-                    if (state.moduleNames().contains(App.getExerciseFeatureUtil().featureName) &&
-                            !state.moduleNames().contains(App.getStorageFeatureUtil().featureName)) {
+                    val exercisesFeatureName=ExercisesSingleton.getInstance().getFeatureName()
+                    val storageFeatureName=StorageSingleton.getInstance().getFeatureName()
+                    if (state.moduleNames().contains(exercisesFeatureName) &&
+                            !state.moduleNames().contains(storageFeatureName)) {
 
-                        exercisesFragment = FragmentUtil.ExercisesFragment()
+                        exercisesFragment = ExercisesSingleton.getInstance().createExercisesFragment()
                         if(mainBottomNavigation.menu.findItem(R.id.navExercises).isChecked)
                             loadFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
                         else
                             loadHiddenFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
 
-                    } else if (state.moduleNames().contains(App.getStorageFeatureUtil().featureName) &&
-                        !state.moduleNames().contains(App.getExerciseFeatureUtil().featureName)) {
+                    } else if (state.moduleNames().contains(storageFeatureName) &&
+                        !state.moduleNames().contains(exercisesFeatureName)) {
 
-                        storageFragment = FragmentUtil.StorageFragment()
+                        storageFragment = StorageSingleton.getInstance().createExercisesStorageFragment()
                         loadHiddenFragment(R.id.main_fragment_container, storageFragment!!, TAG_STORAGE_FRAGMENT)
 
-                    } else if (state.moduleNames().contains(App.getStorageFeatureUtil().featureName) &&
-                        state.moduleNames().contains(App.getExerciseFeatureUtil().featureName)){
+                    } else if (state.moduleNames().contains(storageFeatureName) &&
+                        state.moduleNames().contains(exercisesFeatureName)){
 
-                        exercisesFragment = FragmentUtil.ExercisesFragment()
+                        exercisesFragment = ExercisesSingleton.getInstance().createExercisesFragment()
                         loadHiddenFragment(R.id.main_fragment_container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
-                        storageFragment = FragmentUtil.StorageFragment()
+                        storageFragment = StorageSingleton.getInstance().createExercisesStorageFragment()
                         loadHiddenFragment(R.id.main_fragment_container, storageFragment!!, TAG_STORAGE_FRAGMENT)
                     }
 
@@ -213,13 +217,13 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
             cryptographerFragment = CryptographerFragment()
             loadFragment(container, cryptographerFragment!!, TAG_CRYPTOGRAPHER_FRAGMENT)
 
-            if(App.getExerciseFeatureUtil().isInstalled()){
-                exercisesFragment= FragmentUtil.ExercisesFragment()
+            if(ExercisesSingleton.getInstance().isInstalled()){
+                exercisesFragment= ExercisesSingleton.getInstance().createExercisesFragment()
                 loadHiddenFragment(container, exercisesFragment!!, TAG_EXERCISES_FRAGMENT)
             }
 
-            if(App.getStorageFeatureUtil().isInstalled()){
-                storageFragment= FragmentUtil.StorageFragment()
+            if(StorageSingleton.getInstance().isInstalled()){
+                storageFragment= StorageSingleton.getInstance().createExercisesStorageFragment()
                 loadHiddenFragment(container, storageFragment!!, TAG_STORAGE_FRAGMENT)
             }
         } else {
@@ -230,19 +234,15 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     private fun initBottomNavigation(){
             mainBottomNavigation.setOnNavigationItemSelectedListener(null)
             val menu=mainBottomNavigation.menu
-            val exStatus = Storage.getExercisesStatus(this)
-            if (exStatus == -1) {
-                hideBottomNavigation()
-                return
-            }
 
-            if (App.getStorageFeatureUtil().isInstalled() && menu.size()<3) {
-                val itemStorage= ResUtil.getString("storage")
-                val itemStorageIcon= ResUtil.getDrawable("ic_storage")
+
+            if (StorageSingleton.getInstance().isInstalled() && menu.size()<3) {
+                val itemStorage= ResUtil.getString(StorageSingleton.STRING_STORAGE)
+                val itemStorageIcon= ResUtil.getDrawable(StorageSingleton.ICON_STORAGE)
                 menu.add(Menu.NONE, 3, Menu.NONE, itemStorage).icon = itemStorageIcon
             }
 
-            if (App.getExerciseFeatureUtil().isInstalled())
+            if (ExercisesSingleton.getInstance().isInstalled())
                 menu.findItem(R.id.navExercises).title = getString(R.string.exercise)
             else
                 menu.findItem(R.id.navExercises).title = getString(R.string.exercises_download)
@@ -252,7 +252,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
                 if (item == R.id.navCryptography) {
                     navigateToCryptographerFragment()
                 } else if (item == R.id.navExercises) {
-                    if (App.getExerciseFeatureUtil().isInstalled())
+                    if (ExercisesSingleton.getInstance().isInstalled())
                         navigateToExercisesFragment()
                     else{
                         if(isAlertFragmentVisible()) {
@@ -273,15 +273,15 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
 
     private fun initFeatures(){
-        if(App.getTutorialFeatureUtil().isInstalled()
-            && Storage.getUninstallTutorial(applicationContext)
+        if(TutorialSingleton.getInstance().isInstalled()
+            && Storage.getUninstallTutorial()
         ) {
-            splitInstallManager.deferredUninstall(arrayListOf(App.getTutorialFeatureUtil().featureName))
+            splitInstallManager.deferredUninstall(arrayListOf(TutorialSingleton.getInstance().getFeatureName()))
         }
     }
 
     private fun navigateToTutorial(){
-        val intent = ActivityUtil.TutorialActivity(this)
+        val intent = TutorialSingleton.getInstance().createTutorialIntent(this)
         startActivity(intent)
     }
 
@@ -403,10 +403,10 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
         dialog?.dismiss()
         if(includeSave)
             viewModel.install(arrayListOf(
-                App.getExerciseFeatureUtil().featureName,
-                App.getStorageFeatureUtil().featureName))
+                ExercisesSingleton.getInstance().getFeatureName(),
+                StorageSingleton.getInstance().getFeatureName()))
         else
-            viewModel.install(arrayListOf(App.getExerciseFeatureUtil().featureName))
+            viewModel.install(arrayListOf( ExercisesSingleton.getInstance().getFeatureName()))
         showDownloadingDialog()
     }
 
@@ -417,7 +417,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
     override fun onDownloadStorageYes() {
         (findFragmentByTag(AlertDialog.DIALOG_DOWNLOAD_STORAGE) as AlertDialog?)?.dismiss()
-        viewModel.install(arrayListOf(App.getStorageFeatureUtil().featureName))
+        viewModel.install(arrayListOf(StorageSingleton.getInstance().getFeatureName()))
         showDownloadingDialog()
     }
 
@@ -433,14 +433,14 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
 
     //downloading dialog callbacks
     override fun onDownloadingCancel() {
-        if(!App.getExerciseFeatureUtil().isInstalled())
+        if(!ExercisesSingleton.getInstance().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
         session?.let { splitInstallManager.cancelInstall(session!!) }
         (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)?.dismiss()
     }
 
     override fun onDownloadingHide() {
-        if(!App.getExerciseFeatureUtil().isInstalled())
+        if(!ExercisesSingleton.getInstance().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
         val dialog=(findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)
         val body= dialog?.getBody()
@@ -451,7 +451,7 @@ class MainActivity : BaseSplitActivity(), AlertDialog.OnClickListener, MainCallb
     }
 
     override fun onDownloadingFinish() {
-        if(!App.getExerciseFeatureUtil().isInstalled())
+        if(!ExercisesSingleton.getInstance().isInstalled())
             mainBottomNavigation.menu.findItem(R.id.navCryptography).isChecked=true
         (findFragmentByTag(AlertDialog.DIALOG_DOWNLOADING) as AlertDialog?)?.dismiss()
     }
