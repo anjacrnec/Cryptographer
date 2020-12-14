@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <string name = "hello_blank_fragment"> Bonjour fragment vierge </string>
+    <string name = "exercise_body"> Utilisez le %1$s pour %2$s le %3$s %4$s avec la clé %5$s </string>
+    <string name = "ek"> chiffrer </string>
+    <string name = "dk"> décrypter </string>
+    <string name = "pt"> texte brut </string>
+    <string name = "ct"> texte chiffré </string>
+    <string name = "exercise"> Exercice </string>
+    <string name = "cipher_colon"> Chiffre: </string>
+    <string name = "plain_text_colon"> Texte brut: </string>
+    <string name = "cipher_text_colon"> Texte chiffré: </string>
+    <string name = "key_colon"> Clé: </string>
+    <string name = "new_exercise"> Suivant </string>
+    <string name = "configure_exercise"> Configurer les paramètres de génération d\'exercices </string>
+    <string name = "answer"> Réponse </string>
+    <string name = "generate_answer"> Voir la réponse </string>
+
+    <string name = "caeser"> Céser </string>
+    <string name = "affine"> Affine </string>
+    <string name = "vigenere"> Vigenere </string>
+    <string name = "playfair"> Playfair </string>
+    <string name = "ortho"> Orthogonal </string>
+    <string name = "reverse"> Orthogonal inverse </string>
+    <string name = "diagonal"> Diagonale </string>
+    <string name = "include_sentences"> Phrases </string>
+    <string name = "ciphers_disabled"> Au moins un chiffrement doit être activé pour générer un exercice </string>
+
+    <string name = "correct_answer"> Bonne réponse </string>
+    <string name = "wrong_answer"> Mauvaise réponse </string>
+    <string name = "exercise_is_saved"> Exercice enregistré avec succès! </string>
+    <string name = "ok"> Ok </string>
+
+
+
+</resources>

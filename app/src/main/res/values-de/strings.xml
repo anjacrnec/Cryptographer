@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "app_name"> Kryptograf </string>
+    <string name = "title_tutorial"> Tutorial </string>
+    <string name = "cryptography"> Kryptographie </string>
+    <string name = "exercise"> Übungen </string>
+    <string name = "help"> Hilfe </string>
+
+    <string name = "encrypt"> Chiffre </string>
+    <string name = "decrypt"> entziffern </string>
+    <string name = "clear"> Löschen </string>
+    <string name = "plain_text"> Nur Text </string>
+    <string name = "cipher_text"> Chiffretext </string>
+    <string name = "key"> Schlüssel </string>
+    <string name = "input"> Eingabe </string>
+    <string name = "output"> Ausgabe </string>
+
+
+    <string name = "caeser_encryption"> caeser cipher </string>
+    <string name = "caeser_helper_key"> Der Schlüssel muss zwischen den Werten 1 und 25 liegen. </string>
+
+
+    <string name = "affine_cipher"> affine Verschlüsselung </string>
+    <string name = "keyA"> Schlüssel A </string>
+    <string name = "keyB"> Schlüssel B </string>
+    <string name = "affine_helper_key"> Der Schlüssel muss in Bezug auf 26 </string> invertierbar sein
+
+    <string name = "vignere_cipher"> vigenere cipher </string>
+    <string name = "playfair_cipher"> playfair-Chiffre </string>
+
+
+    <string name = "transpositional_cipher"> transpositional </string>
+    <string name = "transpositional_orthogonal"> Orthogonal </string>
+    <string name = "transpositional_orthogonal_boustrophedon"> Orthogonales Boustrophedon </string>
+    <string name = "transpositional_orthogonal_boustrophedon2"> Orthogonal \ n Boustrophedon </string>
+    <string name = "transpositional_diagonal"> Diagonale </string>
+    <string name = "transpositional_helper_key"> Der Schlüssel muss aus mindestens 2 Zahlen bestehen. \ n Wenn sortiert, sollte der Schlüssel aus einer Reihe inkrementierender Werte bestehen. </string>
+    <string name = "transpositional_helper_key2"> Der Schlüssel muss aus mindestens 2 Zahlen bestehen. \ n Wenn sortiert, sollte der Schlüssel aus einer Reihe inkrementierender Werte bestehen. </string>
+    <string name = "transpositional_diagonal_key"> Der Schlüssel muss kürzer als die Eingabe sein. </string>
+    <string name = "trans_ortho_boustrophedon_cipher"> transpositionale orthogonale Boustrophedon-Chiffre </string>
+    <string name = "trans_ortho_cipher"> transpositionale orthogonale Chiffre </string>
+    <string name = "trans_diagonal_cipher"> transpositionale diagonale Chiffre </string>
+    <string name = "trans_method"> Methode: </string>
+
+    <string name = "title_exercises"> Übungen </string>
+    <string name = "exercises_download"> Übungen herunterladen </string>
+
+    <string name = "hello_blank_fragment"> Hallo leeres Fragment </string>
+
+    <string name = "status_downloading"> Herunterladen </string>
+    <string name = "status_pending"> Ausstehend </string>
+    <string name = "status_installing"> </string> installieren
+    <string name = "status_installed"> Installiert </string>
+    <string name = "status_canceled"> Abgebrochen </string>
+    <string name = "status_error"> Fehler </string>
+
+    <string name = "ok"> Ok </string>
+    <string name = "title_images"> Bilder </string>
+    <string name = "title_exercises_storage"> Übungsspeicher </string>
+
+    <string name = "exercises"> Übungen </string>
+    <string name = "exercises_storage"> Übungsspeicher </string>
+    <string name = "tutorial"> Tutorial </string>
+    <string name = "images" translatable = "false"> Bilder </string>
+    <string name = "hide"> hide </string>
+    <string name = "cancel"> Abbrechen </string>
+    <string name = "yes"> yes </string>
+    <string name = "no"> no </string>
+    <string name = "download_feature"> Download-Funktion </string>
+    <string name = "download_storage_desc"> Mit dieser Funktion können Sie diese Übungen in Ihrem Speicher speichern. Um diese Funktion nutzen zu können, muss die App jedoch einige Dateien aus dem Playstore herunterladen. </string>
+    <string name = "download_tutorial_desc"> Diese Funktion zeigt Ihnen, wie Sie die App verwenden. Sie haben diese Funktion zuvor deinstalliert, daher müssen Sie sie erneut herunterladen, um sie verwenden zu können. Möchten Sie diese Funktion herunterladen? </string>
+    <string name = "downloading_already"> Diese Funktion wird bereits heruntergeladen </string>
+    <string name = "download_include_storage"> Speicherfunktion einschließen </string>
+    <string name = "download_exercises_desc"> Mit dieser Funktion können Sie zufällige Kryptografieübungen erstellen, die Sie lösen können. Möchten Sie diese Funktion herunterladen? </string>
+    <string name = "downloading_error_network"> Zum Herunterladen des Moduls benötigen Sie eine Internetverbindung </string>
+    <string name = "downloading_error_session"> Sie laden gerade bereits eine Funktion herunter. Sie können dieses Modul herunterladen, sobald die vorherige Sitzung abgeschlossen ist. </string>
+    <string name = "downloading_error"> Beim Herunterladen des Moduls ist ein Fehler aufgetreten. Versuchen Sie es später erneut. </string>
+</resources>

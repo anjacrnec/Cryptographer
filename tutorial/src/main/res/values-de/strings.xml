@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "next"> Weiter </string>
+    <string name = "previous"> Zurück </string>
+    <string name = "skip_tutorial"> Tutorial überspringen </string>
+    <string name = "tutorial"> Tutorial </string>
+    <string name = "tutorial_instructions"> Anweisungen zur Verwendung der App </string>
+    <string name = "dont_show_message"> Zeig mir das nicht noch einmal </string>
+</resources>

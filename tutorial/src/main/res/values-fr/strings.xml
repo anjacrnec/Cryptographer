@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name = "next"> Suivant </string>
+    <string name = "previous"> Précédent </string>
+    <string name = "skip_tutorial"> Ignorer le didacticiel </string>
+    <string name = "tutorial"> Tutoriel </string>
+    <string name = "tutorial_instructions"> Instructions sur l\'utilisation de l\'application </string>
+    <string name = "dont_show_message"> Ne plus me montrer cela </string>
+</resources>

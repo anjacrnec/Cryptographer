@@ -1,0 +1,33 @@
+<resources>
+    <string name = "hello_blank_fragment"> Hallo leeres Fragment </string>
+    <string name = "exercise_body"> Verwenden Sie %1$s bis %2$s, %3$s %4$s mit dem Schlüssel %5$s </string>
+    <string name = "ek"> verschlüsseln </string>
+    <string name = "dk"> entschlüsseln </string>
+    <string name = "pt"> Klartext </string>
+    <string name = "ct"> Chiffretext </string>
+    <string name = "exercise"> Übung </string>
+    <string name = "cipher_colon"> Chiffre: </string>
+    <string name = "plain_text_colon"> Nur Text: </string>
+    <string name = "cipher_text_colon"> Chiffretext: </string>
+    <string name = "key_colon"> Schlüssel: </string>
+    <string name = "new_exercise"> Weiter </string>
+    <string name = "configure_exercise"> Konfigurieren Sie die Einstellungen für die Übungsgenerierung </string>
+    <string name = "answer"> Antwort </string>
+    <string name = "generate_answer"> Siehe Antwort </string>
+
+    <string name = "caeser"> Caeser </string>
+    <string name = "affine"> Affine </string>
+    <string name = "vigenere"> Vigenere </string>
+    <string name = "playfair"> Playfair </string>
+    <string name = "ortho"> Orthogonal </string>
+    <string name = "reverse"> Orthogonal umkehren </string>
+    <string name = "diagonal"> Diagonale </string>
+    <string name = "include_sentences"> Sätze </string>
+    <string name = "ciphers_disabled"> Zum Generieren einer Übung muss mindestens eine Chiffre aktiviert sein </string>
+
+    <string name = "correct_answer"> Richtige Antwort </string>
+    <string name = "wrong_answer"> Falsche Antwort </string>
+    <string name = "exercise_is_saved"> Erfolgreich gespeicherte Übung! </string>
+    <string name = "ok"> Ok </string>
+
+</resources>
