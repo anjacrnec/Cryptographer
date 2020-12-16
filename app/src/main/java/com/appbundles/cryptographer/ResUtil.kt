@@ -2,6 +2,7 @@ package com.appbundles.cryptographer
 
 import android.content.Context
 import android.graphics.drawable.Drawable
+import com.appbundles.cryptographer.features.Feature
 
 class ResUtil {
 
@@ -28,6 +29,11 @@ class ResUtil {
                 if (!string.isNullOrEmpty())
                     return string
             }
+
+            val string=App.getBaseModule().getString(stringName)
+            if(!string.isNullOrEmpty())
+                return string
+
             return null
         }
 
