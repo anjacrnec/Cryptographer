@@ -66,7 +66,7 @@ class ExercisesFragment : BaseSplitFragment(), AlertDialog.OnClickListener{
 
 
         exSaveBtn.setOnClickListener {
-            if (ExercisesSingleton.getInstance().isInstalled()) {
+            if (StorageSingleton.getInstance().isInstalled()) {
                 saveExercise()
             } else {
                 if (!mainCallback.isAlertFragmentVisible())
