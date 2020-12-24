@@ -6,7 +6,7 @@ import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.ReverseOrthogonalCipher
 import rita.RiTa
 
-class ReverseOrthogonalExercise:ExerciseImpl() {
+class ReverseOrthogonalExercise:ExerciseImpl {
 
     override fun generate(context: Context): Exercise {
         var cipher=generateCipher()

@@ -7,7 +7,7 @@ import com.appbundles.cryptographer.R
 import rita.RiTa
 
 
-class CaesarExercise() : ExerciseImpl() {
+class CaesarExercise() : ExerciseImpl {
 
     override fun generate(context: Context):Exercise {
         var cipher=generateCipher()

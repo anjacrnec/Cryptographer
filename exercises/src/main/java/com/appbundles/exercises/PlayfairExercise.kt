@@ -6,7 +6,7 @@ import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.PlayfairCipher
 import rita.RiTa
 
-class PlayfairExercise:ExerciseImpl() {
+class PlayfairExercise:ExerciseImpl {
 
 
     override fun generate(context: Context): Exercise {

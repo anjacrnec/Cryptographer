@@ -6,7 +6,7 @@ import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.AffineCipher
 import rita.RiTa
 
-class AffineExercise:ExerciseImpl() {
+class AffineExercise:ExerciseImpl {
 
     override fun generate(context: Context): Exercise {
         var cipher=generateCipher()

@@ -6,7 +6,7 @@ import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.VigenereCiphere
 import rita.RiTa
 
-class VigenereExercise:ExerciseImpl() {
+class VigenereExercise:ExerciseImpl {
 
     override fun generate(context: Context): Exercise {
         var cipher=generateCipher()

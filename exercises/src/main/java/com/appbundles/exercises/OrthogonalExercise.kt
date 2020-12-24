@@ -6,7 +6,7 @@ import com.appbundles.cryptographer.R
 import com.appbundles.cryptographer.cryptography.OrthogonalCipher
 import rita.RiTa
 
-class OrthogonalExercise :ExerciseImpl() {
+class OrthogonalExercise :ExerciseImpl {
 
     override fun generate(context: Context): Exercise {
         var cipher=generateCipher()

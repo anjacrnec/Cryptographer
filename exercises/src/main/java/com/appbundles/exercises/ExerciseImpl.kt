@@ -6,7 +6,7 @@ import com.appbundles.exercises.Exercise.Companion.ENCRYPT
 import com.appbundles.exercises.Exercise.Companion.EXERCISES_TYPES
 import rita.RiTa
 
-abstract class ExerciseImpl {
+interface ExerciseImpl {
 
 
     abstract fun generate(context: Context):Exercise
